@@ -130,9 +130,14 @@ const EventBooking = ({ user }) => {
                                 >
                                     <option value="">-- Choose --</option>
                                     {facilities.length > 0 ? facilities.map(f => (
-                                        <option key={f.id} value={f.id}>{f.name} - ₹{f.pricePerDay}/day</option>
+                                        <option key={f.id} value={f.id}>{f.name} (Capacity: {f.capacity}) - ₹{f.pricePerDay}/day</option>
                                     )) : <option disabled>No facilities available</option>}
                                 </select>
+                                {selectedFacility && (
+                                    <div className="mt-3 bg-blue-50 border border-blue-100 rounded-lg p-3 text-sm text-blue-800 flex justify-between items-center">
+                                        <span><strong>Max Capacity:</strong> {facilities.find(f => f.id.toString() === selectedFacility.toString())?.capacity} Persons</span>
+                                    </div>
+                                )}
                             </div>
 
                             <div>
@@ -161,7 +166,7 @@ const EventBooking = ({ user }) => {
                                 <div>
                                     <label className="block text-sm font-semibold text-slate-500 mb-1">Est. Price</label>
                                     <div className="w-full p-3 bg-slate-100 border rounded-xl text-slate-700 font-bold">
-                                        ₹{selectedFacility ? (facilities.find(f => f.id === selectedFacility)?.pricePerDay * days) : 0}
+                                        ₹{selectedFacility ? (facilities.find(f => f.id.toString() === selectedFacility.toString())?.pricePerDay * days) : 0}
                                     </div>
                                 </div>
                             </div>
@@ -246,7 +251,9 @@ const EventBooking = ({ user }) => {
                                             <Calendar size={20} />
                                         </div>
                                         <div>
-                                            <h3 className="font-bold text-slate-800">{b.Facility?.name}</h3>
+                                            <h3 className="font-bold text-slate-800">
+                                                {b.Facility ? b.Facility.name : <span className="text-slate-400 italic font-normal text-sm">(Deleted Facility)</span>}
+                                            </h3>
                                             <p className="text-sm text-slate-500">{new Date(b.date).toDateString()} • {b.purpose}</p>
                                         </div>
                                     </div>

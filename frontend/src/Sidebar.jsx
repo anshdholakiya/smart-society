@@ -22,7 +22,7 @@ const Sidebar = ({ user, activeTab, setActiveTab, onLogout }) => {
           <Shield size={24} className="text-white" />
         </div>
         <div>
-          <h1 className="font-bold text-lg tracking-wide">AutoCraft</h1>
+          <h1 className="font-bold text-lg tracking-wide">Smart Society</h1>
           <p className="text-xs text-slate-400">Society Manager</p>
         </div>
       </div>
