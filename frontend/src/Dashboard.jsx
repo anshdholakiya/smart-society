@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { 
-  Bell, 
-  UserPlus, 
-  Wallet, 
-  Users, 
-  AlertTriangle, 
-  TrendingUp, 
-  Shield, 
+import {
+  Bell,
+  UserPlus,
+  Wallet,
+  Users,
+  AlertTriangle,
+  TrendingUp,
+  Shield,
   MessageSquare,
   Plus
 } from 'lucide-react';
@@ -23,6 +23,10 @@ import Notices from './Notices';
 import ManageResidents from './ManageResidents';
 import Profile from './Profile';          // <--- New
 import FinancialChart from './FinancialChart'; // <--- New
+import SocietyShowcase from './SocietyShowcase'; // <--- New
+import EventBooking from './EventBooking'; // <--- New
+import AdminFacilityManagement from './AdminFacilityManagement';
+import AdminBookingRequests from './AdminBookingRequests';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -30,24 +34,24 @@ const Dashboard = () => {
   const [bills, setBills] = useState([]);
   const [notices, setNotices] = useState([]);
   const [activeTab, setActiveTab] = useState('dashboard');
-  
+
   // Real-time Stats State
   const [stats, setStats] = useState({
-    totalCollected: 0, 
-    totalPending: 0, 
-    totalResidents: 0, 
-    activeIssues: 0, 
-    myBalance: 0, 
+    totalCollected: 0,
+    totalPending: 0,
+    totalResidents: 0,
+    activeIssues: 0,
+    myBalance: 0,
     lastPayment: 0,
     lastPaymentDate: null
   });
 
   // Triggers for refreshing lists
   const [complaintRefresh, setComplaintRefresh] = useState(0);
-  
+
   // Admin Invite State
-  const [inviteData, setInviteData] = useState({ 
-    name: '', email: '', role: 'resident', wing: '', flatNumber: '' 
+  const [inviteData, setInviteData] = useState({
+    name: '', email: '', role: 'resident', wing: '', flatNumber: ''
   });
   const [inviteMsg, setInviteMsg] = useState('');
 
@@ -59,9 +63,9 @@ const Dashboard = () => {
       try {
         const payload = JSON.parse(atob(token.split('.')[1]));
         setUser(payload);
-        
+
         // FETCH INITIAL DATA
-        fetchStats(); 
+        fetchStats();
         fetchNotices();
         if (payload.role === 'resident') {
           fetchBills();
@@ -106,7 +110,7 @@ const Dashboard = () => {
     if (!title) return;
     try {
       await API.post('/notices', { title, type: 'alert' });
-      fetchNotices(); 
+      fetchNotices();
     } catch (err) {
       alert("Failed to post notice");
     }
@@ -134,17 +138,17 @@ const Dashboard = () => {
   // --- CONTENT RENDERER ---
   const renderContent = () => {
     switch (activeTab) {
-      
+
       case 'dashboard':
         return (
           <div className="space-y-8 animate-fade-in">
-             {/* 1. WELCOME BANNER */}
+            {/* 1. WELCOME BANNER */}
             <div className="bg-slate-900 rounded-3xl p-8 text-white relative overflow-hidden shadow-2xl border border-slate-800">
               <div className="relative z-10">
                 <h3 className="text-3xl font-bold mb-2">Society Overview</h3>
                 <p className="text-slate-400">
-                  {user.role === 'admin' 
-                    ? `You have ₹${(stats.totalPending || 0).toLocaleString()} in pending dues.` 
+                  {user.role === 'admin'
+                    ? `You have ₹${(stats.totalPending || 0).toLocaleString()} in pending dues.`
                     : `Welcome back. You have ${stats.activeIssues || 0} active support tickets.`}
                 </p>
               </div>
@@ -164,22 +168,22 @@ const Dashboard = () => {
                 </>
               ) : (
                 <>
-                  <StatCard title="Your Balance" value={`₹${(stats.myBalance || 0).toLocaleString()}`} icon={<Wallet className="text-blue-500" />} trend="Outstanding" color={stats.myBalance > 0 ? "text-red-500" : "text-slate-800"} />
+                  <StatCard title="Pending Dues" value={`₹${(stats.myBalance || 0).toLocaleString()}`} icon={<Wallet className="text-blue-500" />} trend="Outstanding" color={stats.myBalance > 0 ? "text-red-500" : "text-slate-800"} />
                   <StatCard title="Last Payment" value={`₹${(stats.lastPayment || 0).toLocaleString()}`} icon={<TrendingUp className="text-green-500" />} trend={stats.lastPaymentDate ? new Date(stats.lastPaymentDate).toLocaleDateString() : 'None'} />
                   <StatCard title="My Complaints" value={stats.activeIssues || 0} icon={<MessageSquare className="text-amber-500" />} trend="Pending" />
-                  <StatCard title="Support Status" value="Online" icon={<Shield className="text-green-500" />} trend="24/7" />
+                  <StatCard title="Total Paid" value={`₹${(stats.totalSpent || 0).toLocaleString()}`} icon={<Shield className="text-green-500" />} trend="Lifetime" />
                 </>
               )}
             </div>
 
             {/* 3. CHART & ACTIONS LAYOUT */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              
+
               {/* Left: Financial Chart */}
               <div className="lg:col-span-2">
                 <FinancialChart stats={stats} />
               </div>
-              
+
               {/* Right: Urgent Actions */}
               <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm h-full max-h-[350px] overflow-y-auto">
                 <h4 className="font-bold text-slate-800 mb-6 text-lg">Urgent Action Items</h4>
@@ -214,16 +218,14 @@ const Dashboard = () => {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {notices.length === 0 ? <p className="text-slate-400 text-sm italic col-span-3 text-center">No notices posted.</p> : notices.slice(0,3).map(notice => (
-                  <div key={notice.id} className={`p-4 rounded-xl border ${
-                    notice.type === 'maintenance' ? 'bg-blue-50 border-blue-100' : 
+                {notices.length === 0 ? <p className="text-slate-400 text-sm italic col-span-3 text-center">No notices posted.</p> : notices.slice(0, 3).map(notice => (
+                  <div key={notice.id} className={`p-4 rounded-xl border ${notice.type === 'maintenance' ? 'bg-blue-50 border-blue-100' :
                     notice.type === 'event' ? 'bg-amber-50 border-amber-100' : 'bg-red-50 border-red-100'
-                  }`}>
+                    }`}>
                     <div className="flex justify-between items-start mb-1">
-                      <span className={`text-[10px] font-bold uppercase tracking-wider ${
-                        notice.type === 'maintenance' ? 'text-blue-600' : 
+                      <span className={`text-[10px] font-bold uppercase tracking-wider ${notice.type === 'maintenance' ? 'text-blue-600' :
                         notice.type === 'event' ? 'text-amber-600' : 'text-red-600'
-                      }`}>
+                        }`}>
                         {notice.type}
                       </span>
                       <span className="text-[10px] text-slate-400">{new Date(notice.createdAt).toLocaleDateString()}</span>
@@ -236,10 +238,22 @@ const Dashboard = () => {
           </div>
         );
 
-      case 'notices-page': 
+      case 'notices-page':
         return <Notices user={user} />;
 
-      case 'residents': 
+      case 'society':
+        return <SocietyShowcase user={user} />;
+
+      case 'events':
+        return <EventBooking user={user} />;
+
+      case 'admin-facilities':
+        return <AdminFacilityManagement />;
+
+      case 'admin-bookings':
+        return <AdminBookingRequests />;
+
+      case 'residents':
         return <ManageResidents currentUser={user} />;
 
       case 'profile': // <--- NEW TAB
@@ -280,14 +294,13 @@ const Dashboard = () => {
                       bills.map(b => (
                         <tr key={b.id} className="border-b last:border-0 hover:bg-slate-50 transition">
                           <td className="p-4">
-                            <span className="block font-bold text-slate-700">Maintenance Bill</span>
+                            <span className="block font-bold text-slate-700">{b.description || b.month || 'Maintenance Bill'}</span>
                             <span className="text-xs text-slate-500">{b.month}</span>
                           </td>
                           <td className="p-4 font-bold text-slate-700">₹{b.amount}</td>
                           <td className="p-4">
-                            <span className={`px-3 py-1 rounded-full text-xs font-bold ${
-                              b.status === 'paid' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
-                            }`}>
+                            <span className={`px-3 py-1 rounded-full text-xs font-bold ${b.status === 'paid' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+                              }`}>
                               {b.status.toUpperCase()}
                             </span>
                           </td>
@@ -304,41 +317,40 @@ const Dashboard = () => {
       case 'invite': // INVITE FORM WITH WING & FLAT
         return (
           <div className="max-w-2xl mx-auto animate-fade-in">
-             <h2 className="text-2xl font-bold text-slate-800 mb-6">Invite New Resident</h2>
-             <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-200">
-               {inviteMsg && (
-                 <div className={`mb-6 p-4 rounded-xl text-sm font-bold flex items-center gap-2 ${
-                   inviteMsg.includes('✅') ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'
-                 }`}>
-                   {inviteMsg}
-                 </div>
-               )}
-               <form onSubmit={handleInvite} className="space-y-6">
-                 <div className="grid grid-cols-2 gap-4">
-                    <div className="col-span-2">
-                      <label className="block text-sm font-bold text-slate-700 mb-2">Resident Name</label>
-                      <input type="text" placeholder="e.g. Rahul Sharma" className="w-full p-3 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 transition" value={inviteData.name} onChange={(e)=>setInviteData({...inviteData, name:e.target.value})} required/>
-                    </div>
-                    
-                    <div className="col-span-2">
-                      <label className="block text-sm font-bold text-slate-700 mb-2">Email Address</label>
-                      <input type="email" placeholder="e.g. rahul@example.com" className="w-full p-3 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 transition" value={inviteData.email} onChange={(e)=>setInviteData({...inviteData, email:e.target.value})} required/>
-                    </div>
+            <h2 className="text-2xl font-bold text-slate-800 mb-6">Invite New Resident</h2>
+            <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-200">
+              {inviteMsg && (
+                <div className={`mb-6 p-4 rounded-xl text-sm font-bold flex items-center gap-2 ${inviteMsg.includes('✅') ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'
+                  }`}>
+                  {inviteMsg}
+                </div>
+              )}
+              <form onSubmit={handleInvite} className="space-y-6">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="col-span-2">
+                    <label className="block text-sm font-bold text-slate-700 mb-2">Resident Name</label>
+                    <input type="text" placeholder="e.g. Rahul Sharma" className="w-full p-3 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 transition" value={inviteData.name} onChange={(e) => setInviteData({ ...inviteData, name: e.target.value })} required />
+                  </div>
 
-                    <div>
-                      <label className="block text-sm font-bold text-slate-700 mb-2">Wing</label>
-                      <input type="text" placeholder="e.g. A" className="w-full p-3 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 transition" value={inviteData.wing} onChange={(e)=>setInviteData({...inviteData, wing:e.target.value})} />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-bold text-slate-700 mb-2">Flat No.</label>
-                      <input type="text" placeholder="e.g. 101" className="w-full p-3 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 transition" value={inviteData.flatNumber} onChange={(e)=>setInviteData({...inviteData, flatNumber:e.target.value})} />
-                    </div>
-                 </div>
-                 <button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-4 rounded-xl font-bold text-lg shadow-lg shadow-blue-200 transition-all active:scale-95 flex items-center justify-center gap-2">
-                   <UserPlus size={20} /> Send Invitation
-                 </button>
-               </form>
-             </div>
+                  <div className="col-span-2">
+                    <label className="block text-sm font-bold text-slate-700 mb-2">Email Address</label>
+                    <input type="email" placeholder="e.g. rahul@example.com" className="w-full p-3 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 transition" value={inviteData.email} onChange={(e) => setInviteData({ ...inviteData, email: e.target.value })} required />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-bold text-slate-700 mb-2">Wing</label>
+                    <input type="text" placeholder="e.g. A" className="w-full p-3 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 transition" value={inviteData.wing} onChange={(e) => setInviteData({ ...inviteData, wing: e.target.value })} />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-bold text-slate-700 mb-2">Flat No.</label>
+                    <input type="text" placeholder="e.g. 101" className="w-full p-3 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 transition" value={inviteData.flatNumber} onChange={(e) => setInviteData({ ...inviteData, flatNumber: e.target.value })} />
+                  </div>
+                </div>
+                <button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-4 rounded-xl font-bold text-lg shadow-lg shadow-blue-200 transition-all active:scale-95 flex items-center justify-center gap-2">
+                  <UserPlus size={20} /> Send Invitation
+                </button>
+              </form>
+            </div>
           </div>
         );
 
@@ -349,11 +361,11 @@ const Dashboard = () => {
 
   return (
     <div className="flex h-screen bg-slate-50 overflow-hidden font-sans">
-      <Sidebar 
-        user={user} 
-        activeTab={activeTab} 
-        setActiveTab={setActiveTab} 
-        onLogout={handleLogout} 
+      <Sidebar
+        user={user}
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        onLogout={handleLogout}
       />
       <div className="flex-1 ml-64 overflow-y-auto h-screen scroll-smooth">
         <div className="p-8">
@@ -388,14 +400,12 @@ const StatCard = ({ title, value, icon, trend, color = "text-slate-800" }) => (
 const ActionItem = ({ title, status, priority }) => (
   <div className="flex items-center justify-between p-4 bg-slate-50 rounded-xl border border-slate-100 group hover:bg-white hover:border-blue-200 hover:shadow-sm transition-all cursor-pointer">
     <div className="flex items-center gap-4">
-      <div className={`w-3 h-3 rounded-full ring-2 ring-white shadow-sm ${
-        priority === 'High' ? 'bg-red-500' : priority === 'Medium' ? 'bg-amber-500' : 'bg-blue-500'
-      }`} />
+      <div className={`w-3 h-3 rounded-full ring-2 ring-white shadow-sm ${priority === 'High' ? 'bg-red-500' : priority === 'Medium' ? 'bg-amber-500' : 'bg-blue-500'
+        }`} />
       <span className="font-semibold text-slate-700">{title}</span>
     </div>
-    <span className={`text-xs font-bold px-2 py-1 rounded border ${
-      status === 'Overdue' ? 'bg-red-50 text-red-600 border-red-100' : 'bg-slate-100 text-slate-500 border-slate-200'
-    }`}>
+    <span className={`text-xs font-bold px-2 py-1 rounded border ${status === 'Overdue' ? 'bg-red-50 text-red-600 border-red-100' : 'bg-slate-100 text-slate-500 border-slate-200'
+      }`}>
       {status}
     </span>
   </div>

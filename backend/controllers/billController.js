@@ -1,9 +1,9 @@
-const { MaintenanceBill, User } = require('../models');
+const { Bill, User } = require('../models');
 
 // @desc    Get all bills for the logged-in user (Resident View)
 exports.getMyBills = async (req, res) => {
   try {
-    const bills = await MaintenanceBill.findAll({
+    const bills = await Bill.findAll({
       where: { userId: req.user.id },
       order: [['createdAt', 'DESC']]
     });
@@ -16,12 +16,14 @@ exports.getMyBills = async (req, res) => {
 // @desc    Create a bill (Admin Only)
 exports.createBill = async (req, res) => {
   try {
-    const { userId, amount, month, dueDate } = req.body;
-    const bill = await MaintenanceBill.create({
+    const { userId, amount, month, dueDate, type, description } = req.body;
+    const bill = await Bill.create({
       userId,
       amount,
       month,
       dueDate,
+      type: type || 'maintenance',
+      description,
       status: 'pending'
     });
     res.status(201).json({ message: 'Bill generated', bill });
@@ -45,7 +47,7 @@ exports.getResidents = async (req, res) => {
 // @desc    Get ALL bills (Admin View to see who hasn't paid)
 exports.getAllBills = async (req, res) => {
   try {
-    const bills = await MaintenanceBill.findAll({
+    const bills = await Bill.findAll({
       include: [{ model: User, attributes: ['name', 'email'] }], // Include Resident Name
       order: [['createdAt', 'DESC']]
     });
@@ -59,8 +61,8 @@ exports.getAllBills = async (req, res) => {
 exports.markBillPaid = async (req, res) => {
   try {
     const { id } = req.params;
-    const bill = await MaintenanceBill.findByPk(id);
-    
+    const bill = await Bill.findByPk(id);
+
     if (!bill) return res.status(404).json({ message: 'Bill not found' });
 
     bill.status = 'paid';

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Mail, Lock, LogIn } from 'lucide-react';
 import API from './api';
-import { setAuthToken } from './storage'; // <--- Import this
+import { setAuthToken } from './storage';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -15,9 +15,9 @@ const Login = () => {
 
     try {
       const { data } = await API.post('/users/login', formData);
-      
+
       // USE SAFE STORAGE INSTEAD OF LOCALSTORAGE
-      setAuthToken(data.token); 
+      setAuthToken(data.token);
 
       console.log('Login Success:', data.user);
       navigate('/dashboard');
@@ -46,7 +46,7 @@ const Login = () => {
               <p>{error}</p>
             </div>
           )}
-          
+
           <div className="relative">
             <Mail className="absolute left-3 top-3 text-slate-400" size={20} />
             <input
@@ -82,4 +82,4 @@ const Login = () => {
   );
 };
 
-export default Login;   
+export default Login;

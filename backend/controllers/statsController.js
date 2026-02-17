@@ -1,4 +1,4 @@
-const { User, MaintenanceBill, Complaint } = require('../models');
+const { User, Bill, Complaint } = require('../models');
 
 exports.getDashboardStats = async (req, res) => {
   try {
@@ -9,12 +9,12 @@ exports.getDashboardStats = async (req, res) => {
       // === ADMIN STATS (Society Wide) ===
       const totalResidents = await User.count({ where: { role: 'resident' } });
       const pendingComplaints = await Complaint.count({ where: { status: 'pending' } });
-      
-      const bills = await MaintenanceBill.findAll();
+
+      const bills = await Bill.findAll();
       const totalCollected = bills
         .filter(b => b.status === 'paid')
         .reduce((sum, b) => sum + Number(b.amount), 0);
-      
+
       const totalPending = bills
         .filter(b => b.status === 'pending')
         .reduce((sum, b) => sum + Number(b.amount), 0);
@@ -29,13 +29,18 @@ exports.getDashboardStats = async (req, res) => {
 
     } else {
       // === RESIDENT STATS (Personal) ===
-      const myBills = await MaintenanceBill.findAll({ where: { userId } });
+      const myBills = await Bill.findAll({ where: { userId } });
+
       const myPending = myBills
         .filter(b => b.status === 'pending')
         .reduce((sum, b) => sum + Number(b.amount), 0);
-      
+
+      const totalSpent = myBills
+        .filter(b => b.status === 'paid')
+        .reduce((sum, b) => sum + Number(b.amount), 0);
+
       // Find last paid amount
-      const paidBills = myBills.filter(b => b.status === 'paid').sort((a, b) => b.updatedAt - a.updatedAt);
+      const paidBills = myBills.filter(b => b.status === 'paid').sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
       const lastPayment = paidBills.length > 0 ? paidBills[0].amount : 0;
       const lastPaymentDate = paidBills.length > 0 ? paidBills[0].updatedAt : null;
 
@@ -44,6 +49,7 @@ exports.getDashboardStats = async (req, res) => {
       return res.json({
         type: 'resident',
         myBalance: myPending,
+        totalSpent, // <--- New Field
         lastPayment,
         lastPaymentDate,
         activeIssues: myComplaints

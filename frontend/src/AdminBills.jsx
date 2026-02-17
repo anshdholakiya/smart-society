@@ -46,7 +46,7 @@ const AdminBills = () => {
   };
 
   const handleMarkPaid = async (billId) => {
-    if(!window.confirm("Confirm cash/bank payment received?")) return;
+    if (!window.confirm("Confirm cash/bank payment received?")) return;
     try {
       await API.put(`/bills/${billId}/pay`);
       fetchAllBills(); // Refresh list to show green badge
@@ -57,17 +57,16 @@ const AdminBills = () => {
 
   return (
     <div className="space-y-8 animate-fade-in">
-      
+
       {/* 1. GENERATOR FORM */}
       <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
         <h3 className="text-xl font-bold mb-6 flex items-center gap-2 text-slate-800">
           <Users className="text-blue-500" /> Generate Monthly Bill
         </h3>
-        
+
         {msg && (
-          <div className={`mb-4 p-3 rounded-lg text-sm font-medium ${
-            msg.includes('✅') ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'
-          }`}>
+          <div className={`mb-4 p-3 rounded-lg text-sm font-medium ${msg.includes('✅') ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'
+            }`}>
             {msg}
           </div>
         )}
@@ -76,10 +75,10 @@ const AdminBills = () => {
           {/* ... (Form inputs remain the same as before) ... */}
           <div>
             <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Select Resident</label>
-            <select 
+            <select
               className="w-full p-3 border rounded-xl"
               value={formData.userId}
-              onChange={(e) => setFormData({...formData, userId: e.target.value})}
+              onChange={(e) => setFormData({ ...formData, userId: e.target.value })}
               required
             >
               <option value="">-- Choose a Resident --</option>
@@ -90,29 +89,29 @@ const AdminBills = () => {
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Amount (₹)</label>
-              <input 
-                type="number" placeholder="2500" 
+              <input
+                type="number" placeholder="2500"
                 className="w-full p-3 border rounded-xl"
                 value={formData.amount}
-                onChange={(e) => setFormData({...formData, amount: e.target.value})}
+                onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
                 required
               />
             </div>
             <div>
               <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Bill Description</label>
-              <input 
-                type="text" placeholder="e.g. Maintenance - March 2026" 
+              <input
+                type="text" placeholder="e.g. Maintenance - March 2026"
                 className="w-full p-3 border rounded-xl"
                 value={formData.month}
-                onChange={(e) => setFormData({...formData, month: e.target.value})}
+                onChange={(e) => setFormData({ ...formData, month: e.target.value })}
                 required
               />
             </div>
           </div>
 
           <div>
-             <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Due Date</label>
-             <input type="date" className="w-full p-3 border rounded-xl" value={formData.dueDate} onChange={(e)=>setFormData({...formData, dueDate: e.target.value})} required />
+            <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Due Date</label>
+            <input type="date" className="w-full p-3 border rounded-xl" value={formData.dueDate} onChange={(e) => setFormData({ ...formData, dueDate: e.target.value })} required />
           </div>
 
           <button disabled={loading} className="w-full bg-slate-900 text-white py-3 rounded-xl font-bold hover:bg-slate-800 transition">
@@ -142,19 +141,18 @@ const AdminBills = () => {
                     {bill.User?.name || 'Unknown'}
                     <div className="text-xs text-slate-400">{bill.User?.email}</div>
                   </td>
-                  <td className="p-4 text-sm">{bill.month}</td>
+                  <td className="p-4 text-sm">{bill.description || bill.month}</td>
                   <td className="p-4 font-bold">₹{bill.amount}</td>
                   <td className="p-4">
-                    <span className={`px-2 py-1 rounded text-xs font-bold flex w-fit items-center gap-1 ${
-                      bill.status === 'paid' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
-                    }`}>
-                      {bill.status === 'paid' ? <CheckCircle size={12}/> : <Clock size={12}/>}
+                    <span className={`px-2 py-1 rounded text-xs font-bold flex w-fit items-center gap-1 ${bill.status === 'paid' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+                      }`}>
+                      {bill.status === 'paid' ? <CheckCircle size={12} /> : <Clock size={12} />}
                       {bill.status.toUpperCase()}
                     </span>
                   </td>
                   <td className="p-4">
                     {bill.status === 'pending' && (
-                      <button 
+                      <button
                         onClick={() => handleMarkPaid(bill.id)}
                         className="text-xs bg-green-600 text-white px-3 py-1.5 rounded-lg font-bold hover:bg-green-700 transition shadow-sm"
                       >

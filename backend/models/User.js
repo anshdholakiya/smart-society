@@ -32,6 +32,14 @@ const User = sequelize.define('User', {
     type: DataTypes.STRING, 
     allowNull: true,
   },
+  parkingSlot: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  profession: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
   // === NEW FIELDS FOR INVITE FLOW ===
   invitationToken: {
     type: DataTypes.STRING,

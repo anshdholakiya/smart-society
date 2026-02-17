@@ -2,10 +2,13 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const db = require('./models'); // Imports the index.js from the models folder
-const userRoutes = require('./routes/userRoutes'); // <--- Import this
+const userRoutes = require('./routes/userRoutes');
 const billRoutes = require('./routes/billRoutes');
 const complaintRoutes = require('./routes/complaintRoutes');
-const statsRoutes = require('./routes/statsRoutes'); // <--- Import
+const statsRoutes = require('./routes/statsRoutes');
+const noticeRoutes = require('./routes/noticeRoutes');
+const societyRoutes = require('./routes/societyRoutes');
+const bookingRoutes = require('./routes/bookingRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -30,7 +33,9 @@ app.use('/api/users', userRoutes);
 app.use('/api/bills', billRoutes); // <--- Add this
 app.use('/api/complaints', complaintRoutes);
 app.use('/api/stats', statsRoutes); // <--- Use
-app.use('/api/notices', require('./routes/noticeRoutes'));
+app.use('/api/notices', noticeRoutes);
+app.use('/api/society', societyRoutes);
+app.use('/api/bookings', bookingRoutes);
 
 // 4. DATABASE SYNC & SERVER START
 /**

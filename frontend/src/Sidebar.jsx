@@ -8,6 +8,8 @@ import {
   Shield,
   User,
   UserPlus,
+  Building,
+  Calendar,
   Bell // <--- Fixed: Added Bell import
 } from 'lucide-react';
 
@@ -63,6 +65,27 @@ const Sidebar = ({ user, activeTab, setActiveTab, onLogout }) => {
               Admin Controls
             </div>
             <NavItem
+              icon={<Users size={20} />}
+              label="Manage Society"
+              id="society"
+              activeTab={activeTab}
+              onClick={setActiveTab}
+            />
+            <NavItem
+              icon={<Building size={20} />}
+              label="Facilities"
+              id="admin-facilities"
+              activeTab={activeTab}
+              onClick={setActiveTab}
+            />
+            <NavItem
+              icon={<Calendar size={20} />}
+              label="Booking Requests"
+              id="admin-bookings"
+              activeTab={activeTab}
+              onClick={setActiveTab}
+            />
+            <NavItem
               icon={<UserPlus size={20} />}
               label="Invite Residents"
               id="invite"
@@ -93,6 +116,20 @@ const Sidebar = ({ user, activeTab, setActiveTab, onLogout }) => {
               Resident Menu
             </div>
             <NavItem
+              icon={<Users size={20} />}
+              label="Society Info"
+              id="society"
+              activeTab={activeTab}
+              onClick={setActiveTab}
+            />
+            <NavItem
+              icon={<Receipt size={20} />}
+              label="Events"
+              id="events"
+              activeTab={activeTab}
+              onClick={setActiveTab}
+            />
+            <NavItem
               icon={<Receipt size={20} />}
               label="My Bills"
               id="bills"
@@ -114,7 +151,7 @@ const Sidebar = ({ user, activeTab, setActiveTab, onLogout }) => {
             <p className="text-xs text-slate-500 truncate capitalize">{user.role}</p>
           </div>
         </div>
-        
+
         <button
           onClick={onLogout}
           className="w-full flex items-center justify-center gap-2 bg-slate-800 hover:bg-red-600 text-slate-300 hover:text-white py-2 rounded-lg transition-all duration-300 text-sm font-medium"
@@ -131,8 +168,8 @@ const NavItem = ({ icon, label, id, activeTab, onClick }) => (
   <button
     onClick={() => onClick(id)}
     className={`w-full flex items-center gap-3 px-3 py-3 rounded-xl transition-all duration-200 ${activeTab === id
-        ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/50'
-        : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+      ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/50'
+      : 'text-slate-400 hover:bg-slate-800 hover:text-white'
       }`}
   >
     {icon}
