@@ -19,7 +19,7 @@ const Notices = ({ user }) => {
   };
 
   const handleDelete = async (id) => {
-    if(!window.confirm("Are you sure you want to remove this notice?")) return;
+    if (!window.confirm("Are you sure you want to remove this notice?")) return;
     try {
       await API.delete(`/notices/${id}`);
       fetchNotices();
@@ -38,15 +38,15 @@ const Notices = ({ user }) => {
 
   return (
     <div className="max-w-5xl mx-auto space-y-6 animate-fade-in">
-      
+
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold text-slate-800 flex items-center gap-2">
           <Bell className="text-blue-600" /> Community Notices
         </h2>
-        
+
         {user.role === 'admin' && (
-          <button 
-            onClick={() => setShowForm(!showForm)} 
+          <button
+            onClick={() => setShowForm(!showForm)}
             className="bg-slate-900 text-white px-4 py-2 rounded-xl font-bold flex items-center gap-2 hover:bg-slate-800 transition"
           >
             {showForm ? 'Cancel' : <><Plus size={18} /> New Notice</>}
@@ -62,20 +62,20 @@ const Notices = ({ user }) => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="md:col-span-2">
                 <label className="block text-sm font-bold text-slate-500 mb-1">Title</label>
-                <input 
-                  type="text" required 
+                <input
+                  type="text" required
                   className="w-full p-3 border rounded-xl"
                   value={formData.title}
-                  onChange={e => setFormData({...formData, title: e.target.value})}
+                  onChange={e => setFormData({ ...formData, title: e.target.value })}
                   placeholder="e.g. Water Supply Interruption"
                 />
               </div>
               <div>
                 <label className="block text-sm font-bold text-slate-500 mb-1">Type</label>
-                <select 
+                <select
                   className="w-full p-3 border rounded-xl bg-white"
                   value={formData.type}
-                  onChange={e => setFormData({...formData, type: e.target.value})}
+                  onChange={e => setFormData({ ...formData, type: e.target.value })}
                 >
                   <option value="alert">🚨 High Alert</option>
                   <option value="maintenance">🛠 Maintenance</option>
@@ -85,10 +85,10 @@ const Notices = ({ user }) => {
             </div>
             <div>
               <label className="block text-sm font-bold text-slate-500 mb-1">Description (Optional)</label>
-              <textarea 
+              <textarea
                 className="w-full p-3 border rounded-xl h-24"
                 value={formData.description}
-                onChange={e => setFormData({...formData, description: e.target.value})}
+                onChange={e => setFormData({ ...formData, description: e.target.value })}
                 placeholder="Provide detailed information..."
               />
             </div>
@@ -105,22 +105,20 @@ const Notices = ({ user }) => {
           <div key={notice.id} className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">
             <div className="flex justify-between items-start">
               <div className="flex gap-4">
-                <div className={`p-3 rounded-xl h-fit ${
-                  notice.type === 'alert' ? 'bg-red-100 text-red-600' : 
-                  notice.type === 'maintenance' ? 'bg-blue-100 text-blue-600' : 'bg-amber-100 text-amber-600'
-                }`}>
-                  {notice.type === 'alert' ? <AlertTriangle size={24}/> : 
-                   notice.type === 'maintenance' ? <Info size={24}/> : <Calendar size={24}/>}
+                <div className={`p-3 rounded-xl h-fit ${notice.type === 'alert' ? 'bg-red-100 text-red-600' :
+                    notice.type === 'maintenance' ? 'bg-blue-100 text-blue-600' : 'bg-amber-100 text-amber-600'
+                  }`}>
+                  {notice.type === 'alert' ? <AlertTriangle size={24} /> :
+                    notice.type === 'maintenance' ? <Info size={24} /> : <Calendar size={24} />}
                 </div>
                 <div>
                   <div className="flex items-center gap-2 mb-1">
-                    <span className={`text-xs font-bold uppercase px-2 py-0.5 rounded ${
-                      notice.type === 'alert' ? 'bg-red-50 text-red-600' : 
-                      notice.type === 'maintenance' ? 'bg-blue-50 text-blue-600' : 'bg-amber-50 text-amber-600'
-                    }`}>
+                    <span className={`text-xs font-bold uppercase px-2 py-0.5 rounded ${notice.type === 'alert' ? 'bg-red-50 text-red-600' :
+                        notice.type === 'maintenance' ? 'bg-blue-50 text-blue-600' : 'bg-amber-50 text-amber-600'
+                      }`}>
                       {notice.type}
                     </span>
-                    <span className="text-xs text-slate-400">{new Date(notice.createdAt).toLocaleDateString()}</span>
+                    <span className="text-xs text-slate-400">{new Date(notice.createdAt).toLocaleDateString('en-GB')}</span>
                   </div>
                   <h3 className="text-lg font-bold text-slate-800">{notice.title}</h3>
                   <p className="text-slate-600 mt-2 leading-relaxed">{notice.description}</p>
@@ -128,7 +126,7 @@ const Notices = ({ user }) => {
               </div>
 
               {user.role === 'admin' && (
-                <button 
+                <button
                   onClick={() => handleDelete(notice.id)}
                   className="text-slate-400 hover:text-red-500 p-2 hover:bg-red-50 rounded-lg transition"
                   title="Delete Notice"
