@@ -2,6 +2,7 @@ const { User } = require('../models');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto'); // Built-in Node module
+const sendEmail = require('../utils/sendEmail');
 
 const generateToken = (id, name, role) => {
   return jwt.sign({ id, name, role }, process.env.JWT_SECRET, { expiresIn: '30d' });
@@ -33,7 +34,7 @@ exports.registerUser = async (req, res) => {
   }
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(password, salt);
-  
+
   // Mark registered users as setup automatically
   const user = await User.create({ name, email, password: hashedPassword, role, isSetup: true });
 
@@ -44,7 +45,7 @@ exports.registerUser = async (req, res) => {
 exports.inviteUser = async (req, res) => {
   try {
     const { name, email, role, wing, flatNumber } = req.body;
-    
+
     if (await User.findOne({ where: { email } })) {
       return res.status(400).json({ message: 'User already exists' });
     }
@@ -53,23 +54,44 @@ exports.inviteUser = async (req, res) => {
     const token = crypto.randomBytes(20).toString('hex');
 
     // Create user with placeholder password
-    const user = await User.create({ 
-      name, email, role, wing, flatNumber, 
+    const user = await User.create({
+      name, email, role, wing, flatNumber,
       invitationToken: token,
-      password: 'NOT_SET', 
-      isSetup: false 
+      password: 'NOT_SET',
+      isSetup: false
     });
 
     const inviteLink = `http://localhost:5173/setup-password/${token}`;
 
-    console.log("\n==================================================");
-    console.log("🔗  NEW INVITE LINK GENERATED");
-    console.log("--------------------------------------------------");
-    console.log(`Resident: ${name}`);
-    console.log(`Link: ${inviteLink}`); // <--- Click this in terminal
-    console.log("==================================================\n");
+    const message = `
+      You have been invited to join the Smart Society Management system.
+      Please click on the following link to set your password and activate your account:
+      ${inviteLink}
 
-    res.status(201).json({ message: 'Invitation link generated in terminal' });
+      Role: ${role}
+      Wing: ${wing || 'N/A'}
+      Flat Number: ${flatNumber || 'N/A'}
+
+      If you did not request this, please ignore this email.
+    `;
+
+    try {
+      await sendEmail({
+        email: user.email,
+        subject: 'Invitation to Smart Society Management System',
+        message: message,
+      });
+
+      console.log(`✅ Email sent to ${user.email}`);
+      res.status(201).json({ message: 'Invitation link sent successfully to email.' });
+    } catch (err) {
+      console.log('❌ Failed to send email.', err);
+      // Reset the user tokens since we failed
+      user.invitationToken = undefined;
+      await user.save({ validate: false });
+
+      return res.status(500).json({ message: 'Error sending email. Please try again later.' });
+    }
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Error inviting user' });
@@ -80,7 +102,7 @@ exports.inviteUser = async (req, res) => {
 exports.setupPassword = async (req, res) => {
   try {
     const { token, password } = req.body;
-    
+
     console.log("🛠️ Setup requested for token:", token);
 
     const user = await User.findOne({ where: { invitationToken: token } });
@@ -128,7 +150,7 @@ exports.deleteUser = async (req, res) => {
 exports.updateProfile = async (req, res) => {
   try {
     const user = await User.findByPk(req.user.id);
-    
+
     if (!user) return res.status(404).json({ message: 'User not found' });
 
     // Allow updating these fields
