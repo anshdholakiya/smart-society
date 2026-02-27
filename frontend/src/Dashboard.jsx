@@ -105,17 +105,7 @@ const Dashboard = () => {
     }
   };
 
-  const handlePostNotice = async () => {
-    const title = prompt("Enter Notice Message (e.g., 'Water Cut Tomorrow'):");
-    if (!title) return;
-    try {
-      await API.post('/notices', { title, type: 'alert' });
-      fetchNotices();
-      alert("Notice added successfully!");
-    } catch (err) {
-      alert("Failed to post notice");
-    }
-  };
+
 
   const handleLogout = () => {
     clearAuthToken();
@@ -215,11 +205,6 @@ const Dashboard = () => {
                   <button onClick={() => setActiveTab('notices-page')} className="text-xs bg-slate-100 text-slate-600 px-3 py-1.5 rounded-lg font-bold hover:bg-slate-200 transition">
                     View All
                   </button>
-                  {user.role === 'admin' && (
-                    <button onClick={handlePostNotice} className="text-xs bg-blue-600 text-white px-3 py-1.5 rounded-lg font-bold hover:bg-blue-700 flex items-center gap-1 transition">
-                      <Plus size={14} /> Add
-                    </button>
-                  )}
                 </div>
               </div>
 
