@@ -13,7 +13,7 @@ const bookingRoutes = require('./routes/bookingRoutes');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-
+   
 // 1. MIDDLEWARE
 // CORS allows your React frontend (on port 5173/3000) to talk to this backend
 app.use(cors());
