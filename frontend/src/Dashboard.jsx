@@ -111,6 +111,7 @@ const Dashboard = () => {
     try {
       await API.post('/notices', { title, type: 'alert' });
       fetchNotices();
+      alert("Notice added successfully!");
     } catch (err) {
       alert("Failed to post notice");
     }
@@ -210,15 +211,20 @@ const Dashboard = () => {
                 <h4 className="font-bold text-slate-800 text-lg flex items-center gap-2">
                   <Bell size={18} className="text-blue-500" /> Recent Notices
                 </h4>
-                {user.role === 'admin' && (
-                  <button onClick={handlePostNotice} className="text-xs bg-blue-600 text-white px-3 py-1.5 rounded-lg font-bold hover:bg-blue-700 flex items-center gap-1 transition">
-                    <Plus size={14} /> Add
+                <div className="flex gap-2">
+                  <button onClick={() => setActiveTab('notices-page')} className="text-xs bg-slate-100 text-slate-600 px-3 py-1.5 rounded-lg font-bold hover:bg-slate-200 transition">
+                    View All
                   </button>
-                )}
+                  {user.role === 'admin' && (
+                    <button onClick={handlePostNotice} className="text-xs bg-blue-600 text-white px-3 py-1.5 rounded-lg font-bold hover:bg-blue-700 flex items-center gap-1 transition">
+                      <Plus size={14} /> Add
+                    </button>
+                  )}
+                </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {notices.length === 0 ? <p className="text-slate-400 text-sm italic col-span-3 text-center">No notices posted.</p> : notices.slice(0, 3).map(notice => (
+                {notices.length === 0 ? <p className="text-slate-400 text-sm italic col-span-3 text-center">No notices posted.</p> : notices.slice(0, 6).map(notice => (
                   <div key={notice.id} className={`p-4 rounded-xl border ${notice.type === 'maintenance' ? 'bg-blue-50 border-blue-100' :
                     notice.type === 'event' ? 'bg-amber-50 border-amber-100' : 'bg-red-50 border-red-100'
                     }`}>
