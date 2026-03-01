@@ -13,7 +13,7 @@ const bookingRoutes = require('./routes/bookingRoutes');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-   
+
 // 1. MIDDLEWARE
 // CORS allows your React frontend (on port 5173/3000) to talk to this backend
 app.use(cors());
@@ -37,11 +37,33 @@ app.use('/api/notices', noticeRoutes);
 app.use('/api/society', societyRoutes);
 app.use('/api/bookings', bookingRoutes);
 
-// 4. DATABASE SYNC & SERVER START
+// 4. PRODUCTION SETUP: Serve static files from React build directory
+if (process.env.NODE_ENV === 'production') {
+  const path = require('path');
+  // Serve static files from the React app's dist directory
+  app.use(express.static(path.join(__dirname, '../frontend/dist')));
+
+  // The "catchall" handler: for any request that doesn't match an API route,
+  // we send back the React index.html file.
+  app.use((req, res, next) => {
+    if (req.originalUrl.startsWith('/api')) {
+      return next();
+    }
+    res.sendFile(path.resolve(__dirname, '../frontend/dist', 'index.html'));
+  });
+}
+
+// 5. GLOBAL ERROR HANDLER
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ message: 'Internal Server Error', error: process.env.NODE_ENV === 'development' ? err.message : {} });
+});
+
+// 6. DATABASE SYNC & SERVER START
 /**
- * db.sequelize.sync({ alter: true }) 
- * 'alter: true' checks the current state of the database and performs 
- * the necessary changes to make it match the models.
+ * db.sequelize.sync({ alter: true })
+  * 'alter: true' checks the current state of the database and performs
+    * the necessary changes to make it match the models.
  */
 db.sequelize.sync({ alter: true })
   .then(() => {
