@@ -96,6 +96,8 @@ const Dashboard = () => {
     }
   };
 
+
+
   const fetchBills = async () => {
     try {
       const { data } = await API.get('/bills/my-bills');
@@ -376,8 +378,8 @@ const Dashboard = () => {
   );
 };
 
-// --- HELPER COMPONENTS ---
-const StatCard = ({ title, value, icon, trend, color = "text-slate-800" }) => (
+//helper
+const StatCard = ({ title, value, icon, trend,color="text-slate-800" }) => (
   <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all group cursor-default">
     <div className="flex justify-between items-start mb-4">
       <div className="p-3 bg-slate-50 rounded-xl group-hover:scale-110 transition-transform">{icon}</div>
