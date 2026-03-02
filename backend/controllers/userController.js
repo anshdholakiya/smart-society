@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto'); // Built-in Node module
 const sendEmail = require('../utils/sendEmail');
+const { cloudinary } = require('../middleware/uploadMiddleware');
 
 const generateToken = (id, name, role) => {
   return jwt.sign({ id, name, role }, process.env.JWT_SECRET, { expiresIn: '30d' });
@@ -19,7 +20,7 @@ exports.loginUser = async (req, res) => {
 
     res.json({
       token: generateToken(user.id, user.name, user.role),
-      user: { id: user.id, name: user.name, email: user.email, role: user.role }
+      user: { id: user.id, name: user.name, email: user.email, role: user.role, profilePicture: user.profilePicture }
     });
   } else {
     res.status(401).json({ message: 'Invalid email or password' });
@@ -146,6 +147,26 @@ exports.deleteUser = async (req, res) => {
   }
 };
 
+// @desc    Get Current User Profile
+exports.getProfile = async (req, res) => {
+  try {
+    const user = await User.findByPk(req.user.id);
+    if (!user) return res.status(404).json({ message: 'User not found' });
+
+    res.json({
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      wing: user.wing,
+      flatNumber: user.flatNumber,
+      profilePicture: user.profilePicture
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching profile' });
+  }
+};
+
 // @desc    Update User Profile (Self)
 exports.updateProfile = async (req, res) => {
   try {
@@ -153,14 +174,26 @@ exports.updateProfile = async (req, res) => {
 
     if (!user) return res.status(404).json({ message: 'User not found' });
 
+    // Handle new profile picture upload
+    if (req.file) {
+      // If a previous picture exists, delete it from Cloudinary
+      if (user.profilePictureId) {
+        try {
+          await cloudinary.uploader.destroy(user.profilePictureId);
+        } catch (err) {
+          console.error("Failed to delete old profile picture:", err);
+        }
+      }
+      // Save new picture details
+      user.profilePicture = req.file.path; // Secure Cloudinary URL
+      user.profilePictureId = req.file.filename; // Cloudinary Public ID
+    }
+
     // Allow updating these fields
     user.name = req.body.name || user.name;
     user.email = req.body.email || user.email;
     user.wing = req.body.wing || user.wing;
     user.flatNumber = req.body.flatNumber || user.flatNumber;
-
-    // Optional: Add phone if you added it to the model
-    // user.phone = req.body.phone || user.phone;
 
     await user.save();
 
@@ -170,7 +203,8 @@ exports.updateProfile = async (req, res) => {
       email: user.email,
       role: user.role,
       wing: user.wing,
-      flatNumber: user.flatNumber
+      flatNumber: user.flatNumber,
+      profilePicture: user.profilePicture
     });
   } catch (error) {
     res.status(500).json({ message: 'Error updating profile' });

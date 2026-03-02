@@ -60,6 +60,11 @@ app.use((err, req, res, next) => {
 });
 
 // 6. DATABASE SYNC & SERVER START
+process.on('exit', (code) => {
+  console.log('Process is exiting with code', code);
+  console.trace('Exit trace');
+});
+
 /**
  * db.sequelize.sync({ alter: true })
   * 'alter: true' checks the current state of the database and performs

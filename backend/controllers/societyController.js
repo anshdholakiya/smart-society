@@ -1,4 +1,16 @@
 const { Society } = require('../models');
+const { cloudinary } = require('../middleware/uploadMiddleware');
+
+// Utility to extract public ID from Cloudinary URL
+const getPublicIdFromUrl = (url) => {
+    if (!url || !url.includes('/upload/')) return null;
+    let path = url.split('/upload/')[1]; // e.g. "v1234/folder/id.jpg"
+    if (path.match(/^v\d+\//)) {
+        path = path.substring(path.indexOf('/') + 1); // "folder/id.jpg"
+    }
+    const lastDotIndex = path.lastIndexOf('.');
+    return lastDotIndex !== -1 ? path.substring(0, lastDotIndex) : path;
+};
 
 // @desc    Get Society Details (Public/Resident)
 exports.getSocietyDetails = async (req, res) => {
@@ -44,6 +56,22 @@ exports.updateSocietyDetails = async (req, res) => {
         if (req.body.removeGalleryIndices) {
             const indicesToRemove = JSON.parse(req.body.removeGalleryIndices); // Expecting array of indices
             let currentGallery = society.gallery || [];
+
+            // Delete removed images from Cloudinary storage
+            for (let index of indicesToRemove) {
+                if (currentGallery[index]) {
+                    const publicId = getPublicIdFromUrl(currentGallery[index]);
+                    if (publicId) {
+                        try {
+                            await cloudinary.uploader.destroy(publicId);
+                            console.log(`Deleted Cloudinary image: ${publicId}`);
+                        } catch (err) {
+                            console.error(`Failed to delete Cloudinary image: ${publicId}`, err);
+                        }
+                    }
+                }
+            }
+
             // Filter out indices
             society.gallery = currentGallery.filter((_, index) => !indicesToRemove.includes(index));
         }

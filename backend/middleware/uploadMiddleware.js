@@ -8,14 +8,21 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-const storage = new CloudinaryStorage({
+const getStorage = (folderName) => new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
-    folder: 'society_complaints',
+    folder: folderName,
     allowed_formats: ['jpg', 'png', 'jpeg'],
   },
 });
 
-const upload = multer({ storage: storage });
+const uploadComplaint = multer({ storage: getStorage('society_complaints') });
+const uploadProfile = multer({ storage: getStorage('society_profiles') });
+const uploadGallery = multer({ storage: getStorage('society_gallery') });
 
-module.exports = upload;
+module.exports = {
+  uploadComplaint,
+  uploadProfile,
+  uploadGallery,
+  cloudinary
+};

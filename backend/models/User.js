@@ -25,11 +25,11 @@ const User = sequelize.define('User', {
     defaultValue: 'resident',
   },
   wing: {
-    type: DataTypes.STRING, 
+    type: DataTypes.STRING,
     allowNull: true,
   },
   flatNumber: {
-    type: DataTypes.STRING, 
+    type: DataTypes.STRING,
     allowNull: true,
   },
   parkingSlot: {
@@ -37,6 +37,14 @@ const User = sequelize.define('User', {
     allowNull: true,
   },
   profession: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  profilePicture: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  profilePictureId: {
     type: DataTypes.STRING,
     allowNull: true,
   },
