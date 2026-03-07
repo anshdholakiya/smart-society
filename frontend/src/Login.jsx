@@ -31,6 +31,8 @@ const Login = () => {
     }
   };
 
+  // Login form with modern styling and error handling
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-600 via-indigo-700 to-slate-900 flex items-center justify-center p-4 relative overflow-hidden">
       {/* Decorative Background Elements */}
