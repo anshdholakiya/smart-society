@@ -32,10 +32,15 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-900 flex items-center justify-center p-4">
-      <div className="max-w-md w-full bg-white rounded-2xl shadow-2xl p-8">
+    <div className="min-h-screen bg-gradient-to-br from-blue-600 via-indigo-700 to-slate-900 flex items-center justify-center p-4 relative overflow-hidden">
+      {/* Decorative Background Elements */}
+      <div className="absolute top-0 left-0 w-96 h-96 bg-white opacity-5 rounded-full -translate-y-1/2 -translate-x-1/2 blur-3xl"></div>
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-white opacity-5 rounded-full translate-y-1/2 translate-x-1/2 blur-3xl"></div>
+      <div className="absolute top-1/2 left-1/4 w-64 h-64 bg-blue-400 opacity-5 rounded-full blur-3xl"></div>
+
+      <div className="max-w-md w-full bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl p-8 relative z-10">
         <div className="text-center mb-10">
-          <h2 className="text-3xl font-bold text-slate-800">Welcome Back</h2>
+          <h2 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-700 bg-clip-text text-transparent">Welcome Back</h2>
           <p className="text-slate-500 mt-2">Smart Society Management System</p>
         </div>
 
