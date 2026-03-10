@@ -1,0 +1,26 @@
+{
+    "name": "smart-society",
+    "version": "1.0.0",
+    "description": "Smart Society Management System",
+    "main": "index.js",
+    "scripts": {
+        "start": "npm run start --prefix backend",
+        "dev": "concurrently \"npm run dev --prefix backend\" \"npm run dev --prefix frontend\"",
+        "build": "npm run build --prefix frontend",
+        "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix frontend && npm run build --prefix frontend"
+    },
+    "keywords": [
+        "society",
+        "management",
+        "react",
+        "node"
+    ],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "concurrently": "^8.2.2"
+    }
+}
+
+
+

@@ -1,9 +1,9 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Login from './Login';
-import Dashboard from './Dashboard';
-import SetupPassword from './SetupPassword';
-import LandingPage from './LandingPage'; // <--- Import
+import Login from './pages/Login';
+import Dashboard from './pages/Dashboard';
+import SetupPassword from './pages/SetupPassword';
+import LandingPage from './pages/LandingPage'; // <--- Import
 
 const App = () => {
   return (
