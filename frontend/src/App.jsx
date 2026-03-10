@@ -1,9 +1,16 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+<<<<<<< HEAD
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import SetupPassword from './pages/SetupPassword';
 import LandingPage from './pages/LandingPage'; // <--- Import
+=======
+import Login from './Login';
+import Dashboard from './Dashboard';
+import SetupPassword from './SetupPassword';
+import LandingPage from './LandingPage'; 
+>>>>>>> 0fe9344d858cca302d7137f328275bdffd5734a3
 
 const App = () => {
   return (
