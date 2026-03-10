@@ -5,7 +5,7 @@ import API from '../utils/api';
 const FileComplaint = ({ onComplaintFiled }) => {
   const [formData, setFormData] = useState({ title: '', description: '' });
   const [image, setImage] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [_loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -27,7 +27,7 @@ const FileComplaint = ({ onComplaintFiled }) => {
       setFormData({ title: '', description: '' });
       setImage(null);
       if (onComplaintFiled) onComplaintFiled();
-    } catch (err) {
+    } catch (_err) {
       alert('Failed to file complaint: ' + (err.response?.data?.message || err.message));
     } finally {
       setLoading(false);

@@ -10,7 +10,7 @@ const ManageResidents = ({ currentUser }) => {
     try {
       const { data } = await API.get('/users');
       setUsers(data);
-    } catch (err) { console.error("Error fetching directory"); }
+    } catch (_err) { console.error("Error fetching directory"); }
   };
 
   useEffect(() => {
@@ -22,7 +22,7 @@ const ManageResidents = ({ currentUser }) => {
     try {
       await API.delete(`/users/${id}`);
       fetchUsers();
-    } catch (err) { alert("Failed to delete user"); }
+    } catch (_err) { alert("Failed to delete user"); }
   };
 
   const handleRoleUpdate = async (id, currentRole) => {
@@ -31,7 +31,7 @@ const ManageResidents = ({ currentUser }) => {
     try {
       await API.put(`/users/${id}/role`, { role: newRole });
       fetchUsers();
-    } catch (err) { alert("Failed to update role"); }
+    } catch (_err) { alert("Failed to update role"); }
   };
 
   // Filter Logic

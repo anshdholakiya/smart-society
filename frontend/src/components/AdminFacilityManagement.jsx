@@ -4,7 +4,7 @@ import { Trash2, Edit2, Plus, X } from 'lucide-react';
 
 const AdminFacilityManagement = () => {
     const [facilities, setFacilities] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [_loading, setLoading] = useState(true);
     const [showForm, setShowForm] = useState(false);
 
     // Form State
@@ -16,7 +16,7 @@ const AdminFacilityManagement = () => {
             const res = await API.get('/bookings/facilities');
             setFacilities(res.data);
             setLoading(false);
-        } catch (err) {
+        } catch (_err) {
             alert('Failed to fetch facilities');
             setLoading(false);
         }
@@ -40,7 +40,7 @@ const AdminFacilityManagement = () => {
             }
             fetchFacilities();
             resetForm();
-        } catch (err) {
+        } catch (_err) {
             alert('Operation failed');
         }
     };
@@ -50,7 +50,7 @@ const AdminFacilityManagement = () => {
         try {
             await API.delete(`/bookings/facilities/${id}`);
             fetchFacilities();
-        } catch (err) {
+        } catch (_err) {
             alert('Failed to delete facility');
         }
     };

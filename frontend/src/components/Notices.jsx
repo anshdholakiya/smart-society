@@ -11,7 +11,7 @@ const Notices = ({ user }) => {
     try {
       const { data } = await API.get('/notices');
       setNotices(data);
-    } catch (err) { console.error("Error loading notices"); }
+    } catch (_err) { console.error("Error loading notices"); }
   };
 
   useEffect(() => {
@@ -25,7 +25,7 @@ const Notices = ({ user }) => {
     try {
       await API.delete(`/notices/${id}`);
       fetchNotices();
-    } catch (err) { alert("Failed to delete"); }
+    } catch (_err) { alert("Failed to delete"); }
   };
 
   const handleSubmit = async (e) => {
@@ -35,7 +35,7 @@ const Notices = ({ user }) => {
       setShowForm(false);
       setFormData({ title: '', description: '', type: 'alert' });
       fetchNotices();
-    } catch (err) { alert("Failed to post notice"); }
+    } catch (_err) { alert("Failed to post notice"); }
   };
 
   return (

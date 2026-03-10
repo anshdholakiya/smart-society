@@ -4,7 +4,7 @@ let memoryStorage = {};
 export const setAuthToken = (token) => {
   try {
     localStorage.setItem('token', token);
-  } catch (e) {
+  } catch (_e) {
     console.warn("localStorage blocked. Using memory storage.");
     memoryStorage['token'] = token;
   }
@@ -13,7 +13,7 @@ export const setAuthToken = (token) => {
 export const getAuthToken = () => {
   try {
     return localStorage.getItem('token') || memoryStorage['token'];
-  } catch (e) {
+  } catch (_e) {
     return memoryStorage['token'];
   }
 };
@@ -21,7 +21,7 @@ export const getAuthToken = () => {
 export const clearAuthToken = () => {
   try {
     localStorage.removeItem('token');
-  } catch (e) {
+  } catch (_e) {
     delete memoryStorage['token'];
   }
 };

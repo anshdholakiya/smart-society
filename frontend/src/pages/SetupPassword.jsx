@@ -9,7 +9,7 @@ const SetupPassword = () => {
   
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [_loading, setLoading] = useState(false);
 
   const handleFinish = async (e) => {
     e.preventDefault();
@@ -26,7 +26,7 @@ const SetupPassword = () => {
 
       alert(response.data.message);
       navigate('/'); // Redirect to login
-    } catch (err) {
+    } catch (_err) {
       console.error(err);
       alert(err.response?.data?.message || "Invalid or expired link.");
     } finally {

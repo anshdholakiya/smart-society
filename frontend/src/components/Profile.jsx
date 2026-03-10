@@ -11,7 +11,7 @@ const Profile = ({ user, setUser }) => {
   });
   const [profilePicture, setProfilePicture] = useState(null);
   const [preview, setPreview] = useState(user.profilePicture || null);
-  const [loading, setLoading] = useState(false);
+  const [_loading, setLoading] = useState(false);
 
   React.useEffect(() => {
     setFormData({
@@ -55,7 +55,7 @@ const Profile = ({ user, setUser }) => {
       setUser(data); // Update global user state
       setPreview(data.profilePicture);
       alert("✅ Profile Updated Successfully!");
-    } catch (err) {
+    } catch (_err) {
       alert("Failed to update profile.");
     } finally {
       setLoading(false);
