@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import SetupPassword from './pages/SetupPassword';
-import LandingPage from './pages/LandingPage'; // <--- Import
+import LandingPage from './pages/LandingPage';
 
 const App = () => {
   return (
