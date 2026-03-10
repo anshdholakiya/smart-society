@@ -5,7 +5,7 @@ import API from '../utils/api';
 const FileComplaint = ({ onComplaintFiled }) => {
   const [formData, setFormData] = useState({ title: '', description: '' });
   const [image, setImage] = useState(null);
-  const [_loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,15 +19,15 @@ const FileComplaint = ({ onComplaintFiled }) => {
     try {
       // API.js handles the token. We only need to specify the content type for files.
       await API.post('/complaints', data, {
-        headers: { 
-          'Content-Type': 'multipart/form-data' 
+        headers: {
+          'Content-Type': 'multipart/form-data'
         }
       });
       alert('Complaint filed successfully!');
       setFormData({ title: '', description: '' });
       setImage(null);
       if (onComplaintFiled) onComplaintFiled();
-    } catch (_err) {
+    } catch (err) {
       alert('Failed to file complaint: ' + (err.response?.data?.message || err.message));
     } finally {
       setLoading(false);
@@ -41,31 +41,31 @@ const FileComplaint = ({ onComplaintFiled }) => {
         <AlertCircle className="text-rose-500" /> Report an Issue
       </h3>
       <form onSubmit={handleSubmit} className="space-y-4">
-        <input 
-          type="text" placeholder="Issue Title (e.g. Broken Pipe)" 
+        <input
+          type="text" placeholder="Issue Title (e.g. Broken Pipe)"
           className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500"
           value={formData.title}
-          onChange={(e) => setFormData({...formData, title: e.target.value})}
+          onChange={(e) => setFormData({ ...formData, title: e.target.value })}
           required
         />
-        <textarea 
-          placeholder="Describe the problem..." 
+        <textarea
+          placeholder="Describe the problem..."
           className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none h-24"
           value={formData.description}
-          onChange={(e) => setFormData({...formData, description: e.target.value})}
+          onChange={(e) => setFormData({ ...formData, description: e.target.value })}
         />
-        
+
         <label className="flex items-center justify-center gap-2 p-3 border-2 border-dashed border-slate-200 rounded-xl cursor-pointer hover:border-blue-400 hover:bg-slate-50 transition">
           <Camera size={20} className="text-slate-400" />
           <span className="text-sm text-slate-500">{image ? image.name : 'Upload Photo'}</span>
-          <input 
-            type="file" className="hidden" 
-            onChange={(e) => setImage(e.target.files[0])} 
+          <input
+            type="file" className="hidden"
+            onChange={(e) => setImage(e.target.files[0])}
             accept="image/*"
           />
         </label>
 
-        <button 
+        <button
           disabled={loading}
           className="w-full bg-rose-600 text-white py-3 rounded-xl font-bold hover:bg-rose-700 transition flex items-center justify-center gap-2 disabled:opacity-50"
         >

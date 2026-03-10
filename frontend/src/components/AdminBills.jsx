@@ -7,7 +7,7 @@ const AdminBills = () => {
   const [allBills, setAllBills] = useState([]); // Store list of bills
   const [formData, setFormData] = useState({ userId: '', amount: '', month: '', dueDate: '' });
   const [msg, setMsg] = useState('');
-  const [_loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   // Load Data on Mount
   useEffect(() => {
@@ -19,14 +19,14 @@ const AdminBills = () => {
     try {
       const { data } = await API.get('/bills/residents');
       setResidents(data);
-    } catch (_err) { console.error("Error loading residents"); }
+    } catch (err) { console.error("Error loading residents"); }
   };
 
   const fetchAllBills = async () => {
     try {
       const { data } = await API.get('/bills/all');
       setAllBills(data);
-    } catch (_err) { console.error("Error loading bills"); }
+    } catch (err) { console.error("Error loading bills"); }
   };
 
   const handleSubmit = async (e) => {
@@ -38,7 +38,7 @@ const AdminBills = () => {
       setMsg('✅ Bill generated successfully!');
       setFormData({ userId: '', amount: '', month: '', dueDate: '' });
       fetchAllBills(); // Refresh the list immediately
-    } catch (_err) {
+    } catch (err) {
       setMsg('❌ Failed: ' + (err.response?.data?.message || err.message));
     } finally {
       setLoading(false);
@@ -50,7 +50,7 @@ const AdminBills = () => {
     try {
       await API.put(`/bills/${billId}/pay`);
       fetchAllBills(); // Refresh list to show green badge
-    } catch (_err) {
+    } catch (err) {
       alert("Failed to update bill");
     }
   };

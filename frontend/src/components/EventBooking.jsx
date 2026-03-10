@@ -6,7 +6,7 @@ const EventBooking = ({ user }) => {
     const [facilities, setFacilities] = useState([]);
     const [myBookings, setMyBookings] = useState([]);
     const [allBookings, setAllBookings] = useState([]); // Admin
-    const [_loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(true);
 
     const isAdmin = user?.role === 'admin';
 
@@ -36,7 +36,7 @@ const EventBooking = ({ user }) => {
             setFacilities(facRes.data);
             setMyBookings(myRes.data);
             if (allRes) setAllBookings(allRes.data);
-        } catch (_err) {
+        } catch (err) {
             console.error(err);
         } finally {
             setLoading(false);
@@ -53,7 +53,7 @@ const EventBooking = ({ user }) => {
             setDays(1);
             setPurpose('');
             setSelectedFacility('');
-        } catch (_err) {
+        } catch (err) {
             alert(err.response?.data?.message || 'Booking failed');
         }
     };
@@ -66,7 +66,7 @@ const EventBooking = ({ user }) => {
             setNewFacility({ name: '', description: '', capacity: 0, pricePerDay: 0 });
             setShowFacilityForm(false);
             fetchData(isAdmin); // Refresh facilities list
-        } catch (_err) {
+        } catch (err) {
             alert('Failed to create facility');
         }
     };
@@ -75,7 +75,7 @@ const EventBooking = ({ user }) => {
         try {
             await API.put(`/bookings/${id}/status`, { status });
             fetchData(true);
-        } catch (_err) {
+        } catch (err) {
             alert('Failed to update status');
         }
     };

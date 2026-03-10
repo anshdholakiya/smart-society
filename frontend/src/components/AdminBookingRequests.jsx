@@ -4,30 +4,30 @@ import { Calendar, CheckCircle, XCircle, Clock } from 'lucide-react';
 
 const AdminBookingRequests = () => {
     const [bookings, setBookings] = useState([]);
-    const [_loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(true);
 
     const fetchBookings = async () => {
         try {
             const res = await API.get('/bookings/all');
             setBookings(res.data);
             setLoading(false);
-        } catch (_err) {
+        } catch (err) {
             console.error(err);
             setLoading(false);
         }
     };
 
-  useEffect(() => {
+    useEffect(() => {
         fetchBookings();
     }, []);
 
-    
+
 
     const updateStatus = async (id, status) => {
         try {
             await API.put(`/bookings/${id}/status`, { status });
             fetchBookings(); // Refresh
-        } catch (_err) {
+        } catch (err) {
             alert('Failed to update status');
         }
     };

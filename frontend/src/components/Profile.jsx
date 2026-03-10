@@ -11,7 +11,7 @@ const Profile = ({ user, setUser }) => {
   });
   const [profilePicture, setProfilePicture] = useState(null);
   const [preview, setPreview] = useState(user.profilePicture || null);
-  const [_loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   React.useEffect(() => {
     setFormData({

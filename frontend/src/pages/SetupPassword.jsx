@@ -6,10 +6,10 @@ import API from '../utils/api';
 const SetupPassword = () => {
   const { token } = useParams(); // Gets token from URL
   const navigate = useNavigate();
-  
+
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
-  const [_loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleFinish = async (e) => {
     e.preventDefault();
@@ -19,14 +19,14 @@ const SetupPassword = () => {
     setLoading(true);
     try {
       // Send token and new password to backend
-      const response = await API.post('/users/setup-password', { 
-        token: token, 
-        password: password 
+      const response = await API.post('/users/setup-password', {
+        token: token,
+        password: password
       });
 
       alert(response.data.message);
       navigate('/'); // Redirect to login
-    } catch (_err) {
+    } catch (err) {
       console.error(err);
       alert(err.response?.data?.message || "Invalid or expired link.");
     } finally {
@@ -48,9 +48,9 @@ const SetupPassword = () => {
         <form onSubmit={handleFinish} className="space-y-5">
           <div>
             <label className="block text-xs font-bold text-slate-500 uppercase mb-2">New Password</label>
-            <input 
-              type="password" 
-              placeholder="••••••••" 
+            <input
+              type="password"
+              placeholder="••••••••"
               className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -60,9 +60,9 @@ const SetupPassword = () => {
 
           <div>
             <label className="block text-xs font-bold text-slate-500 uppercase mb-2">Confirm Password</label>
-            <input 
-              type="password" 
-              placeholder="••••••••" 
+            <input
+              type="password"
+              placeholder="••••••••"
               className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none"
               value={confirm}
               onChange={(e) => setConfirm(e.target.value)}
@@ -70,7 +70,7 @@ const SetupPassword = () => {
             />
           </div>
 
-          <button 
+          <button
             disabled={loading}
             className="w-full bg-blue-600 hover:bg-blue-700 text-white py-4 rounded-xl font-bold shadow-lg shadow-blue-200 transition-all active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2"
           >

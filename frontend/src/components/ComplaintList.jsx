@@ -7,29 +7,29 @@ const ComplaintList = ({ refreshTrigger }) => {
   const [complaints, setComplaints] = useState([]);
   const [userRole, setUserRole] = useState('');
 
+  const fetchComplaints = async () => {
+    try {
+      const { data } = await API.get('/complaints');
+      setComplaints(data);
+    } catch (err) { console.error("Failed to load complaints"); }
+  };
+
   useEffect(() => {
     const token = getAuthToken();
     if (token) {
       try {
         const payload = JSON.parse(atob(token.split('.')[1]));
         setUserRole(payload.role);
-      } catch (_e) { console.error("Token error", e); }
+      } catch (e) { console.error("Token error", e); }
     }
     fetchComplaints();
   }, [refreshTrigger]);
-
-  const fetchComplaints = async () => {
-    try {
-      const { data } = await API.get('/complaints');
-      setComplaints(data);
-    } catch (_err) { console.error("Failed to load complaints"); }
-  };
 
   const handleStatusChange = async (id, newStatus) => {
     try {
       await API.put(`/complaints/${id}/status`, { status: newStatus });
       fetchComplaints();
-    } catch (_err) { alert("Failed to update status"); }
+    } catch (err) { alert("Failed to update status"); }
   };
 
   const handleDelete = async (id) => {
@@ -37,7 +37,7 @@ const ComplaintList = ({ refreshTrigger }) => {
     try {
       await API.delete(`/complaints/${id}`);
       fetchComplaints();
-    } catch (_err) { alert("Failed to delete"); }
+    } catch (err) { alert("Failed to delete"); }
   };
 
   const getStatusStyles = (status) => {

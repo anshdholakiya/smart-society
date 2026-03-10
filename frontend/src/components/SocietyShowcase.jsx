@@ -4,7 +4,7 @@ import { Building, Phone, MapPin, CheckCircle, Edit3, X } from 'lucide-react';
 
 const SocietyShowcase = ({ user }) => {
     const [society, setSociety] = useState(null);
-    const [_loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     // Edit Mode State
@@ -23,7 +23,7 @@ const SocietyShowcase = ({ user }) => {
             const res = await API.get('/society');
             setSociety(res.data);
             setFormData(res.data);
-        } catch (_err) {
+        } catch (err) {
             setError('Failed to load society details.');
         } finally {
             setLoading(false);
@@ -58,7 +58,7 @@ const SocietyShowcase = ({ user }) => {
             setFormData(res.data); // Reset form data
             setIsEditing(false);
             alert('Society details updated!');
-        } catch (_err) {
+        } catch (err) {
             console.error(err);
             alert('Failed to update details.');
         }
