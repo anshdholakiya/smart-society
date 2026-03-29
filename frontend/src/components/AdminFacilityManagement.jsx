@@ -7,7 +7,6 @@ const AdminFacilityManagement = () => {
     const [_loading, setLoading] = useState(true);
     const [showForm, setShowForm] = useState(false);
 
-    // Form State
     const [formData, setFormData] = useState({ name: '', description: '', capacity: 0, pricePerDay: 0 });
     const [editingId, setEditingId] = useState(null);
 
@@ -25,8 +24,6 @@ const AdminFacilityManagement = () => {
   useEffect(() => {
         fetchFacilities();
     }, []);
-
-    
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -87,7 +84,7 @@ const AdminFacilityManagement = () => {
                 </button>
             </div>
 
-            {/* Modal/Form */}
+            {}
             {showForm && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
                     <div className="bg-white rounded-2xl w-full max-w-lg p-6 relative shadow-2xl animate-scale-in">
@@ -153,7 +150,7 @@ const AdminFacilityManagement = () => {
                 </div>
             )}
 
-            {/* List */}
+            {}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {facilities.map(f => (
                     <div key={f.id} className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition">

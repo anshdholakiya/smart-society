@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const db = require('./models'); // Imports the index.js from the models folder
+const db = require('./models');
 const userRoutes = require('./routes/userRoutes');
 const billRoutes = require('./routes/billRoutes');
 const complaintRoutes = require('./routes/complaintRoutes');
@@ -13,38 +13,25 @@ const bookingRoutes = require('./routes/bookingRoutes');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-
-// 1. MIDDLEWARE
-// CORS allows your React frontend (on port 5173/3000) to talk to this backend
 app.use(cors());
-// Built-in middleware to parse JSON bodies from incoming requests
 app.use(express.json());
 
-// 2. TEST ROUTE
-// A simple "Heartbeat" route to check if the server is alive
 app.get('/', (req, res) => {
   res.status(200).json({ message: 'Society Management API is running...' });
 });
 
-// 3. ROUTES (We will add these next)
-// app.use('/api/users', require('./routes/userRoutes'));
-// app.use('/api/maintenance', require('./routes/maintenanceRoutes'));
 app.use('/api/users', userRoutes);
-app.use('/api/bills', billRoutes); // <--- Add this
+app.use('/api/bills', billRoutes);
 app.use('/api/complaints', complaintRoutes);
-app.use('/api/stats', statsRoutes); // <--- Use
+app.use('/api/stats', statsRoutes);
 app.use('/api/notices', noticeRoutes);
 app.use('/api/society', societyRoutes);
 app.use('/api/bookings', bookingRoutes);
 
-// 4. PRODUCTION SETUP: Serve static files from React build directory
 if (process.env.NODE_ENV === 'production') {
   const path = require('path');
-  // Serve static files from the React app's dist directory
   app.use(express.static(path.join(__dirname, '../frontend/dist')));
 
-  // The "catchall" handler: for any request that doesn't match an API route,
-  // we send back the React index.html file.
   app.use((req, res, next) => {
     if (req.originalUrl.startsWith('/api')) {
       return next();
@@ -53,23 +40,16 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
-// 5. GLOBAL ERROR HANDLER
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ message: 'Internal Server Error', error: process.env.NODE_ENV === 'development' ? err.message : {} });
 });
 
-// 6. DATABASE SYNC & SERVER START
 process.on('exit', (code) => {
   console.log('Process is exiting with code', code);
   console.trace('Exit trace');
 });
 
-/**
- * db.sequelize.sync({ alter: true })
-  * 'alter: true' checks the current state of the database and performs
-    * the necessary changes to make it match the models.
- */
 db.sequelize.sync({ alter: true })
   .then(() => {
     console.log('✅ Database synced successfully.');
@@ -79,5 +59,5 @@ db.sequelize.sync({ alter: true })
   })
   .catch((err) => {
     console.error('❌ Unable to connect/sync to the database:', err);
-    process.exit(1); // Stop the server if the DB fails
+    process.exit(1);
   });

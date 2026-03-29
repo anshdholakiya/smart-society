@@ -48,7 +48,7 @@ const User = sequelize.define('User', {
     type: DataTypes.STRING,
     allowNull: true,
   },
-  // === NEW FIELDS FOR INVITE FLOW ===
+  
   invitationToken: {
     type: DataTypes.STRING,
     allowNull: true,

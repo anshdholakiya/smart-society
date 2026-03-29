@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Mail, Lock, LogIn } from 'lucide-react';
 import API from '../utils/api';
-import { setAuthToken } from '../utils/storage';
+import { useAuth } from '../context/AuthContext';
 
 const Login = () => {
   const navigate = useNavigate();
+  const { login } = useAuth();
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
 
@@ -16,8 +17,7 @@ const Login = () => {
     try {
       const { data } = await API.post('/users/login', formData);
 
-      // USE SAFE STORAGE INSTEAD OF LOCALSTORAGE
-      setAuthToken(data.token);
+      login(data.token);
 
       console.log('Login Success:', data.user);
       navigate('/dashboard');
@@ -31,11 +31,8 @@ const Login = () => {
     }
   };
 
-  // Login form with modern styling and error handling
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-600 via-indigo-700 to-slate-900 flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Decorative Background Elements */}
       <div className="absolute top-0 left-0 w-96 h-96 bg-white opacity-5 rounded-full -translate-y-1/2 -translate-x-1/2 blur-3xl"></div>
       <div className="absolute bottom-0 right-0 w-96 h-96 bg-white opacity-5 rounded-full translate-y-1/2 translate-x-1/2 blur-3xl"></div>
       <div className="absolute top-1/2 left-1/4 w-64 h-64 bg-blue-400 opacity-5 rounded-full blur-3xl"></div>

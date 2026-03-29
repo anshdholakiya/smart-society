@@ -52,7 +52,7 @@ const Profile = ({ user, setUser }) => {
       const { data } = await API.put('/users/profile', submitData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
-      setUser(data); // Update global user state
+      setUser(data); 
       setPreview(data.profilePicture);
       alert("✅ Profile Updated Successfully!");
     } catch (_err) {
@@ -122,7 +122,7 @@ const Profile = ({ user, setUser }) => {
                   value={formData.email}
                   onChange={handleChange}
                   className="w-full pl-10 p-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none bg-slate-50 text-slate-500 cursor-not-allowed"
-                  disabled // Usually better to disable email changing for security
+                  disabled 
                 />
               </div>
             </div>

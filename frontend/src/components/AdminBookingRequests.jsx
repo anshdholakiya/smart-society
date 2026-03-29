@@ -21,12 +21,10 @@ const AdminBookingRequests = () => {
         fetchBookings();
     }, []);
 
-
-
     const updateStatus = async (id, status) => {
         try {
             await API.put(`/bookings/${id}/status`, { status });
-            fetchBookings(); // Refresh
+            fetchBookings(); 
         } catch (err) {
             alert('Failed to update status');
         }

@@ -4,7 +4,7 @@ const {
   fileComplaint,
   getComplaints,
   updateComplaintStatus,
-  deleteComplaint // <--- 1. Import this
+  deleteComplaint 
 } = require('../controllers/complaintController');
 const { protect } = require('../middleware/authMiddleware');
 const { uploadComplaint } = require('../middleware/uploadMiddleware');
@@ -13,7 +13,6 @@ router.post('/', protect, uploadComplaint.single('image'), fileComplaint);
 router.get('/', protect, getComplaints);
 router.put('/:id/status', protect, updateComplaintStatus);
 
-// 2. Add this DELETE route
 router.delete('/:id', protect, deleteComplaint);
 
 module.exports = router;

@@ -12,16 +12,14 @@ const {
 } = require('../controllers/bookingController');
 const { protect } = require('../middleware/authMiddleware');
 
-// Facility Routes
 router.get('/facilities', protect, getAllFacilities);
-router.post('/facilities', protect, createFacility); // Needs Admin check
-router.put('/facilities/:id', protect, updateFacility); // Needs Admin check
-router.delete('/facilities/:id', protect, deleteFacility); // Needs Admin check
+router.post('/facilities', protect, createFacility); 
+router.put('/facilities/:id', protect, updateFacility); 
+router.delete('/facilities/:id', protect, deleteFacility); 
 
-// Booking Routes
 router.post('/', protect, createBooking);
 router.get('/my', protect, getMyBookings);
-router.get('/all', protect, getAllBookings); // Needs Admin check
-router.put('/:id/status', protect, updateBookingStatus); // Needs Admin check
+router.get('/all', protect, getAllBookings); 
+router.put('/:id/status', protect, updateBookingStatus); 
 
 module.exports = router;

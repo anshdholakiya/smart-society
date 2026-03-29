@@ -1,6 +1,5 @@
 const { Bill, User } = require('../models');
 
-// @desc    Get all bills for the logged-in user (Resident View)
 exports.getMyBills = async (req, res) => {
   try {
     const bills = await Bill.findAll({
@@ -13,7 +12,6 @@ exports.getMyBills = async (req, res) => {
   }
 };
 
-// @desc    Create a bill (Admin Only)
 exports.createBill = async (req, res) => {
   try {
     const { userId, amount, month, dueDate, type, description } = req.body;
@@ -32,7 +30,6 @@ exports.createBill = async (req, res) => {
   }
 };
 
-// @desc    Get all residents for dropdown (Admin Only)
 exports.getResidents = async (req, res) => {
   try {
     const residents = await User.findAll({ where: { role: 'resident' }, attributes: ['id', 'name', 'email'] });
@@ -42,13 +39,10 @@ exports.getResidents = async (req, res) => {
   }
 };
 
-// === NEW FEATURES ===
-
-// @desc    Get ALL bills (Admin View to see who hasn't paid)
 exports.getAllBills = async (req, res) => {
   try {
     const bills = await Bill.findAll({
-      include: [{ model: User, attributes: ['name', 'email'] }], // Include Resident Name
+      include: [{ model: User, attributes: ['name', 'email'] }], 
       order: [['createdAt', 'DESC']]
     });
     res.json(bills);
@@ -57,7 +51,6 @@ exports.getAllBills = async (req, res) => {
   }
 };
 
-// @desc    Mark bill as PAID (Admin Action)
 exports.markBillPaid = async (req, res) => {
   try {
     const { id } = req.params;

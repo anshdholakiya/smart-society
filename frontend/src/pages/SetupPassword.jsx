@@ -4,7 +4,7 @@ import { Lock, CheckCircle } from 'lucide-react';
 import API from '../utils/api';
 
 const SetupPassword = () => {
-  const { token } = useParams(); // Gets token from URL
+  const { token } = useParams(); 
   const navigate = useNavigate();
 
   const [password, setPassword] = useState('');
@@ -18,14 +18,14 @@ const SetupPassword = () => {
 
     setLoading(true);
     try {
-      // Send token and new password to backend
+      
       const response = await API.post('/users/setup-password', {
         token: token,
         password: password
       });
 
       alert(response.data.message);
-      navigate('/'); // Redirect to login
+      navigate('/'); 
     } catch (err) {
       console.error(err);
       alert(err.response?.data?.message || "Invalid or expired link.");

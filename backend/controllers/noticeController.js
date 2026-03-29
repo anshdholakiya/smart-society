@@ -1,6 +1,5 @@
 const { Notice } = require('../models');
 
-// Get all notices
 exports.getNotices = async (req, res) => {
   try {
     const notices = await Notice.findAll({ order: [['createdAt', 'DESC']] });
@@ -10,7 +9,6 @@ exports.getNotices = async (req, res) => {
   }
 };
 
-// Create
 exports.createNotice = async (req, res) => {
   try {
     const { title, description, type } = req.body;
@@ -21,7 +19,6 @@ exports.createNotice = async (req, res) => {
   }
 };
 
-// Delete (Admin Only)
 exports.deleteNotice = async (req, res) => {
   try {
     const { id } = req.params;

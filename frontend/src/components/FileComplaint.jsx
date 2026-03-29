@@ -17,7 +17,7 @@ const FileComplaint = ({ onComplaintFiled }) => {
     if (image) data.append('image', image);
 
     try {
-      // API.js handles the token. We only need to specify the content type for files.
+      
       await API.post('/complaints', data, {
         headers: {
           'Content-Type': 'multipart/form-data'
@@ -34,7 +34,6 @@ const FileComplaint = ({ onComplaintFiled }) => {
     }
   };
 
-  // ... (JSX remains exactly the same)
   return (
     <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
       <h3 className="text-xl font-bold mb-4 flex items-center gap-2 text-slate-800">

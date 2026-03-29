@@ -5,6 +5,6 @@ const { protect } = require('../middleware/authMiddleware');
 
 router.get('/', protect, getNotices);
 router.post('/', protect, createNotice);
-router.delete('/:id', protect, deleteNotice); // <--- Add Delete
+router.delete('/:id', protect, deleteNotice); 
 
 module.exports = router;    

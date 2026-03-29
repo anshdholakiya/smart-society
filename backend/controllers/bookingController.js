@@ -1,7 +1,6 @@
 const { Booking, Facility, User, Bill } = require('../models');
 const { Op } = require('sequelize');
 
-// @desc    Get All Facilities
 exports.getAllFacilities = async (req, res) => {
     try {
         const facilities = await Facility.findAll();
@@ -11,7 +10,6 @@ exports.getAllFacilities = async (req, res) => {
     }
 };
 
-// @desc    Create a Facility (Admin)
 exports.createFacility = async (req, res) => {
     try {
         const { name, description, capacity, pricePerDay } = req.body;
@@ -22,7 +20,6 @@ exports.createFacility = async (req, res) => {
     }
 };
 
-// @desc    Update a Facility (Admin)
 exports.updateFacility = async (req, res) => {
     try {
         const { id } = req.params;
@@ -38,7 +35,6 @@ exports.updateFacility = async (req, res) => {
     }
 };
 
-// @desc    Delete a Facility (Admin)
 exports.deleteFacility = async (req, res) => {
     try {
         const { id } = req.params;
@@ -53,7 +49,6 @@ exports.deleteFacility = async (req, res) => {
     }
 };
 
-// @desc    Create Booking Request (Resident)
 exports.createBooking = async (req, res) => {
     try {
         const { facilityId, date, purpose, days } = req.body;
@@ -62,10 +57,8 @@ exports.createBooking = async (req, res) => {
         const facility = await Facility.findByPk(facilityId);
         if (!facility) return res.status(404).json({ message: 'Facility not found' });
 
-        // Calculate Total Price
         const totalPrice = parseFloat(facility.pricePerDay) * numDays;
 
-        // Check availability (Start Date to End Date)
         const newStart = new Date(date);
         const newEnd = new Date(date);
         newEnd.setDate(newEnd.getDate() + numDays);
@@ -107,7 +100,6 @@ exports.createBooking = async (req, res) => {
     }
 };
 
-// @desc    Get My Bookings
 exports.getMyBookings = async (req, res) => {
     try {
         const bookings = await Booking.findAll({
@@ -121,7 +113,6 @@ exports.getMyBookings = async (req, res) => {
     }
 };
 
-// @desc    Get All Bookings (Admin)
 exports.getAllBookings = async (req, res) => {
     try {
         const bookings = await Booking.findAll({
@@ -137,11 +128,10 @@ exports.getAllBookings = async (req, res) => {
     }
 };
 
-// @desc    Update Booking Status (Admin)
 exports.updateBookingStatus = async (req, res) => {
     try {
         const { id } = req.params;
-        const { status } = req.body; // 'approved', 'rejected'
+        const { status } = req.body; 
 
         const booking = await Booking.findByPk(id, { include: [Facility] });
         if (!booking) return res.status(404).json({ message: 'Booking not found' });
@@ -149,7 +139,6 @@ exports.updateBookingStatus = async (req, res) => {
         booking.status = status;
         await booking.save();
 
-        // If Approved, Generate Bill
         if (status === 'approved') {
             await Bill.create({
                 userId: booking.userId,

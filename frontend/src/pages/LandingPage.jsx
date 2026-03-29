@@ -8,7 +8,7 @@ const LandingPage = () => {
     return (
         <div className="min-h-screen bg-white font-sans text-slate-900 selection:bg-blue-100 selection:text-blue-900">
 
-            {/* --- NAVBAR --- */}
+            {}
             <nav className="max-w-6xl mx-auto px-6 h-24 flex items-center justify-between">
                 <div className="flex items-center gap-2 cursor-pointer font-bold tracking-tight text-xl" onClick={() => navigate('/')}>
                     <Shield className="text-blue-600" size={26} fill="currentColor" strokeWidth={0} />
@@ -25,9 +25,8 @@ const LandingPage = () => {
                 </div>
             </nav>
 
-            {/* --- HERO SECTION --- */}
+            {}
             <header className="px-6 py-8 md:py-12 text-center max-w-4xl mx-auto">
-
 
                 <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight text-slate-900 mb-6 leading-[1.1]">
                     Community Living, <br />
@@ -55,7 +54,7 @@ const LandingPage = () => {
                 </div>
             </header>
 
-            {/* --- FEATURES GRID --- */}
+            {}
             <section className="bg-slate-50 py-12 border-y border-slate-100">
                 <div className="max-w-6xl mx-auto px-6">
                     <div className="text-center mb-8">
@@ -79,7 +78,7 @@ const LandingPage = () => {
                 </div>
             </section>
 
-            {/* --- CTA BOTTOM --- */}
+            {}
             <section className="py-16 px-6 text-center">
                 <div className="max-w-3xl mx-auto space-y-8">
                     <h2 className="text-4xl font-bold text-slate-900 tracking-tight">Ready to upgrade your experience?</h2>
@@ -93,7 +92,7 @@ const LandingPage = () => {
                 </div>
             </section>
 
-            {/* --- FOOTER --- */}
+            {}
             <footer className="bg-white py-12 border-t border-slate-100">
                 <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-slate-500 font-medium">
                     <div className="flex items-center gap-2">

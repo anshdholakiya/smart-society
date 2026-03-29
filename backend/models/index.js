@@ -7,7 +7,6 @@ const Society = require('./Society');
 const Facility = require('./Facility');
 const Booking = require('./Booking');
 
-// Relationships
 User.hasMany(Bill, { foreignKey: 'userId' });
 Bill.belongsTo(User, { foreignKey: 'userId' });
 

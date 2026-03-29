@@ -12,7 +12,7 @@ const Notice = sequelize.define('Notice', {
     allowNull: false,
   },
   description: {
-    type: DataTypes.TEXT, // <--- New Field
+    type: DataTypes.TEXT, 
     allowNull: true,
   },
   type: {

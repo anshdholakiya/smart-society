@@ -5,17 +5,15 @@ const sequelize = require('./config/database');
 
 async function createAdmin() {
     try {
-        // Attempt to authenticate connection first
+        
         await sequelize.authenticate();
         console.log('Connection has been established successfully.');
 
-        // We can also sync the DB here just in case
         await sequelize.sync({ alter: true });
 
         const adminEmail = 'admin@example.com';
-        const adminPassword = 'adminpassword123'; // Change this later
+        const adminPassword = 'adminpassword123'; 
 
-        // Check if admin already exists
         const existingAdmin = await User.findOne({ where: { email: adminEmail } });
 
         if (existingAdmin) {
@@ -23,11 +21,9 @@ async function createAdmin() {
             process.exit(0);
         }
 
-        // Hash the password
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(adminPassword, salt);
 
-        // Create the admin user
         const admin = await User.create({
             name: 'System Admin',
             email: adminEmail,

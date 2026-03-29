@@ -18,8 +18,6 @@ const Notices = ({ user }) => {
     fetchNotices();
   }, []);
 
-  
-
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to remove this notice?")) return;
     try {
@@ -56,7 +54,7 @@ const Notices = ({ user }) => {
         )}
       </div>
 
-      {/* CREATE FORM (Admin Only) */}
+      {}
       {showForm && (
         <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
           <h3 className="font-bold text-lg mb-4">Post New Announcement</h3>
@@ -101,7 +99,7 @@ const Notices = ({ user }) => {
         </div>
       )}
 
-      {/* NOTICE LIST */}
+      {}
       <div className="grid gap-4">
         {notices.map((notice) => (
           <div key={notice.id} className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">

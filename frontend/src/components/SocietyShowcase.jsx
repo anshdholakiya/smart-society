@@ -7,12 +7,11 @@ const SocietyShowcase = ({ user }) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    // Edit Mode State
     const [isEditing, setIsEditing] = useState(false);
     const [formData, setFormData] = useState({});
     const [newAmenity, setNewAmenity] = useState('');
 
-    const userRole = user?.role; // Use prop
+    const userRole = user?.role; 
 
     useEffect(() => {
         fetchSociety();
@@ -37,7 +36,7 @@ const SocietyShowcase = ({ user }) => {
             data.append('address', formData.address);
             data.append('contactNumber', formData.contactNumber);
             data.append('amenities', JSON.stringify(formData.amenities));
-            data.append('wings', JSON.stringify(formData.wings)); // Preserve wings if present
+            data.append('wings', JSON.stringify(formData.wings)); 
 
             if (formData.newGalleryFiles) {
                 Array.from(formData.newGalleryFiles).forEach(file => {
@@ -49,13 +48,12 @@ const SocietyShowcase = ({ user }) => {
                 data.append('removeGalleryIndices', JSON.stringify(formData.removeGalleryIndices));
             }
 
-            // We need to set content-type for multipart, usually axios does it automatically if data is FormData
             const res = await API.put('/society', data, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
 
             setSociety(res.data);
-            setFormData(res.data); // Reset form data
+            setFormData(res.data); 
             setIsEditing(false);
             alert('Society details updated!');
         } catch (err) {
@@ -101,7 +99,7 @@ const SocietyShowcase = ({ user }) => {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                {/* Main Info Card */}
+                {}
                 <div className="lg:col-span-2 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-3xl p-8 text-white shadow-xl relative overflow-hidden">
                     <div className="absolute top-0 right-0 w-64 h-64 bg-white opacity-5 rounded-full -translate-y-1/2 translate-x-1/4 blur-3xl"></div>
 
@@ -143,7 +141,7 @@ const SocietyShowcase = ({ user }) => {
                     )}
                 </div>
 
-                {/* Amenities Card */}
+                {}
                 <div className="bg-white rounded-3xl p-8 shadow-sm border border-slate-100">
                     <h3 className="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
                         <Building className="text-rose-500" /> Amenities
@@ -184,7 +182,7 @@ const SocietyShowcase = ({ user }) => {
                 </div>
             </div>
 
-            {/* Gallery Section */}
+            {}
             <div className="mt-12">
                 <h3 className="text-2xl font-bold text-slate-800 mb-6">Society Gallery</h3>
                 {isEditing && (
@@ -210,13 +208,13 @@ const SocietyShowcase = ({ user }) => {
                                 {isEditing && (
                                     <button
                                         onClick={() => {
-                                            // Mark for deletion
+                                            
                                             const currentRemoved = formData.removeGalleryIndices || [];
                                             setFormData(prev => ({
                                                 ...prev,
                                                 removeGalleryIndices: [...currentRemoved, index]
                                             }));
-                                            // Visually hide or remove from current view for UX
+                                            
                                             const tempGallery = [...society.gallery];
                                             tempGallery.splice(index, 1);
                                             setSociety(prev => ({ ...prev, gallery: tempGallery }));

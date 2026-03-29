@@ -4,12 +4,11 @@ import { Send, Users, Calendar, DollarSign, CheckCircle, Clock } from 'lucide-re
 
 const AdminBills = () => {
   const [residents, setResidents] = useState([]);
-  const [allBills, setAllBills] = useState([]); // Store list of bills
+  const [allBills, setAllBills] = useState([]); 
   const [formData, setFormData] = useState({ userId: '', amount: '', month: '', dueDate: '' });
   const [msg, setMsg] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // Load Data on Mount
   useEffect(() => {
     fetchResidents();
     fetchAllBills();
@@ -37,7 +36,7 @@ const AdminBills = () => {
       await API.post('/bills/create', formData);
       setMsg('✅ Bill generated successfully!');
       setFormData({ userId: '', amount: '', month: '', dueDate: '' });
-      fetchAllBills(); // Refresh the list immediately
+      fetchAllBills(); 
     } catch (err) {
       setMsg('❌ Failed: ' + (err.response?.data?.message || err.message));
     } finally {
@@ -49,7 +48,7 @@ const AdminBills = () => {
     if (!window.confirm("Confirm cash/bank payment received?")) return;
     try {
       await API.put(`/bills/${billId}/pay`);
-      fetchAllBills(); // Refresh list to show green badge
+      fetchAllBills(); 
     } catch (err) {
       alert("Failed to update bill");
     }
@@ -58,7 +57,7 @@ const AdminBills = () => {
   return (
     <div className="space-y-8 animate-fade-in">
 
-      {/* 1. GENERATOR FORM */}
+      {}
       <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
         <h3 className="text-xl font-bold mb-6 flex items-center gap-2 text-slate-800">
           <Users className="text-blue-500" /> Generate Monthly Bill
@@ -72,7 +71,7 @@ const AdminBills = () => {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* ... (Form inputs remain the same as before) ... */}
+          {}
           <div>
             <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Select Resident</label>
             <select
@@ -86,7 +85,7 @@ const AdminBills = () => {
             </select>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Amount (₹)</label>
               <input
@@ -120,7 +119,7 @@ const AdminBills = () => {
         </form>
       </div>
 
-      {/* 2. MASTER BILL LIST (New Feature) */}
+      {}
       <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
         <h3 className="text-xl font-bold mb-6 text-slate-800">Payment Records</h3>
         <div className="overflow-x-auto">

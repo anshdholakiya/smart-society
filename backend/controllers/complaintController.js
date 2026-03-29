@@ -1,6 +1,5 @@
 const { Complaint, User } = require('../models');
 
-// File a new complaint
 exports.fileComplaint = async (req, res) => {
   try {
     const { title, description } = req.body;
@@ -11,7 +10,7 @@ exports.fileComplaint = async (req, res) => {
       description,
       imageUrl,
       userId: req.user.id,
-      status: 'pending' // Explicit default
+      status: 'pending' 
     });
 
     res.status(201).json({ message: 'Complaint filed successfully', complaint });
@@ -20,12 +19,10 @@ exports.fileComplaint = async (req, res) => {
   }
 };
 
-// Get complaints (Admin sees all, Resident sees theirs)
 exports.getComplaints = async (req, res) => {
   try {
     const filter = req.user.role === 'admin' ? {} : { userId: req.user.id };
-    
-    // We include the User model so Admins can see WHO filed the complaint
+
     const complaints = await Complaint.findAll({ 
       where: filter, 
       include: [{ model: User, attributes: ['name', 'wing', 'flatNumber'] }],
@@ -40,7 +37,7 @@ exports.getComplaints = async (req, res) => {
 
 exports.deleteComplaint = async (req, res) => {
   try {
-    // Only Admin can delete
+    
     if (req.user.role !== 'admin') {
       return res.status(403).json({ message: 'Not authorized' });
     }
@@ -50,7 +47,7 @@ exports.deleteComplaint = async (req, res) => {
 
     if (!complaint) return res.status(404).json({ message: 'Complaint not found' });
 
-    await complaint.destroy(); // <--- Actually deletes it from DB
+    await complaint.destroy(); 
 
     res.json({ message: 'Complaint deleted successfully' });
   } catch (error) {
@@ -58,7 +55,6 @@ exports.deleteComplaint = async (req, res) => {
   }
 };
 
-// Update Status (Admin Only)
 exports.updateComplaintStatus = async (req, res) => {
   try {
     if (req.user.role !== 'admin') {
@@ -66,7 +62,7 @@ exports.updateComplaintStatus = async (req, res) => {
     }
 
     const { id } = req.params;
-    const { status } = req.body; // Expecting: 'pending', 'in-progress', or 'resolved'
+    const { status } = req.body; 
 
     const complaint = await Complaint.findByPk(id);
     if (!complaint) return res.status(404).json({ message: 'Complaint not found' });

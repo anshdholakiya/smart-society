@@ -21,15 +21,15 @@ const Society = sequelize.define('Society', {
         allowNull: true,
     },
     amenities: {
-        type: DataTypes.JSON, // Stores array of strings e.g. ["Gym", "Pool"]
+        type: DataTypes.JSON, 
         defaultValue: [],
     },
     wings: {
-        type: DataTypes.JSON, // Stores array of strings e.g. ["A", "B", "C"]
+        type: DataTypes.JSON, 
         defaultValue: [],
     },
     gallery: {
-        type: DataTypes.JSON, // Stores array of image URLs
+        type: DataTypes.JSON, 
         defaultValue: [],
     }
 });

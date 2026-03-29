@@ -6,7 +6,7 @@ exports.getDashboardStats = async (req, res) => {
     const role = req.user.role;
 
     if (role === 'admin') {
-      // === ADMIN STATS (Society Wide) ===
+      
       const totalResidents = await User.count({ where: { role: 'resident' } });
       const pendingComplaints = await Complaint.count({ where: { status: 'pending' } });
 
@@ -28,7 +28,7 @@ exports.getDashboardStats = async (req, res) => {
       });
 
     } else {
-      // === RESIDENT STATS (Personal) ===
+      
       const myBills = await Bill.findAll({ where: { userId } });
 
       const myPending = myBills
@@ -39,7 +39,6 @@ exports.getDashboardStats = async (req, res) => {
         .filter(b => b.status === 'paid')
         .reduce((sum, b) => sum + Number(b.amount), 0);
 
-      // Find last paid amount
       const paidBills = myBills.filter(b => b.status === 'paid').sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
       const lastPayment = paidBills.length > 0 ? paidBills[0].amount : 0;
       const lastPaymentDate = paidBills.length > 0 ? paidBills[0].updatedAt : null;
@@ -49,7 +48,7 @@ exports.getDashboardStats = async (req, res) => {
       return res.json({
         type: 'resident',
         myBalance: myPending,
-        totalSpent, // <--- New Field
+        totalSpent, 
         lastPayment,
         lastPaymentDate,
         activeIssues: myComplaints

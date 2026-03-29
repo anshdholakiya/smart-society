@@ -15,7 +15,7 @@ const Complaint = sequelize.define('Complaint', {
     type: DataTypes.TEXT,
   },
   imageUrl: {
-    type: DataTypes.STRING, // Store the Cloudinary URL here
+    type: DataTypes.STRING, 
   },
   status: {
     type: DataTypes.ENUM('pending', 'resolved', 'in-progress'), 

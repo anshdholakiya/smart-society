@@ -5,18 +5,16 @@ import { Calendar, Clock, CheckCircle, XCircle } from 'lucide-react';
 const EventBooking = ({ user }) => {
     const [facilities, setFacilities] = useState([]);
     const [myBookings, setMyBookings] = useState([]);
-    const [allBookings, setAllBookings] = useState([]); // Admin
+    const [allBookings, setAllBookings] = useState([]); 
     const [loading, setLoading] = useState(true);
 
     const isAdmin = user?.role === 'admin';
 
-    // Booking Form State
     const [date, setDate] = useState('');
     const [days, setDays] = useState(1);
     const [selectedFacility, setSelectedFacility] = useState('');
     const [purpose, setPurpose] = useState('');
 
-    // Facility Creation State (Admin)
     const [newFacility, setNewFacility] = useState({ name: '', description: '', capacity: 0, pricePerDay: 0 });
     const [showFacilityForm, setShowFacilityForm] = useState(false);
 
@@ -65,7 +63,7 @@ const EventBooking = ({ user }) => {
             alert('Facility created successfully!');
             setNewFacility({ name: '', description: '', capacity: 0, pricePerDay: 0 });
             setShowFacilityForm(false);
-            fetchData(isAdmin); // Refresh facilities list
+            fetchData(isAdmin); 
         } catch (err) {
             alert('Failed to create facility');
         }
@@ -99,7 +97,7 @@ const EventBooking = ({ user }) => {
                 )}
             </div>
 
-            {/* Admin Facility Creation Form */}
+            {}
             {isAdmin && showFacilityForm && (
                 <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200 shadow-inner mb-6">
                     <h3 className="font-bold text-slate-700 mb-4">Add New Facility</h3>
@@ -115,7 +113,7 @@ const EventBooking = ({ user }) => {
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-                {/* Booking Form - HIDDEN FOR ADMIN */}
+                {}
                 {!isAdmin && (
                     <div className="bg-white rounded-3xl p-8 shadow-sm border border-slate-100 h-fit">
                         <h2 className="text-xl font-bold text-slate-800 mb-6">New Booking</h2>
@@ -190,10 +188,10 @@ const EventBooking = ({ user }) => {
                     </div>
                 )}
 
-                {/* Bookings List */}
+                {}
                 <div className={`space-y-8 ${isAdmin ? 'col-span-3' : 'lg:col-span-2'}`}>
 
-                    {/* Admin Approval Section */}
+                    {}
                     {isAdmin && (
                         <div>
                             <h2 className="text-xl font-bold text-slate-800 mb-4">All Booking Requests</h2>
@@ -232,9 +230,9 @@ const EventBooking = ({ user }) => {
                         </div>
                     )}
                 </div>
-            </div> {/* Closes the grid container */}
+            </div> {}
 
-            {/* My Bookings Section - HIDDEN FOR ADMIN */}
+            {}
             {!isAdmin && (
                 <div>
                     <h2 className="text-xl font-bold text-slate-800 mb-4">My Bookings</h2>

@@ -24,12 +24,12 @@ const Bill = sequelize.define('Bill', {
         allowNull: true,
     },
     month: {
-        type: DataTypes.STRING, // e.g., "February 2026", can be null for events
+        type: DataTypes.STRING, 
         allowNull: true,
     },
     dueDate: {
         type: DataTypes.DATEONLY,
-        allowNull: true, // Events might not have due date or same as event date
+        allowNull: true, 
     },
     penalty: {
         type: DataTypes.DECIMAL(10, 2),

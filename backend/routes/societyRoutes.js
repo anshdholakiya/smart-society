@@ -6,6 +6,6 @@ const { protect } = require('../middleware/authMiddleware');
 const { uploadGallery } = require('../middleware/uploadMiddleware');
 
 router.get('/', getSocietyDetails);
-router.put('/', protect, uploadGallery.array('gallery'), updateSocietyDetails); // Admin check should be inside controller or middleware
+router.put('/', protect, uploadGallery.array('gallery'), updateSocietyDetails); 
 
 module.exports = router;

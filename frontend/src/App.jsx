@@ -1,23 +1,15 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Login from './pages/Login';
-import Dashboard from './pages/Dashboard';
-import SetupPassword from './pages/SetupPassword';
-import LandingPage from './pages/LandingPage';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
+import AppRoutes from './routes/AppRoutes';
 
 const App = () => {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<LandingPage />} /> {/* Root is now Landing Page */}
-        <Route path="/login" element={<Login />} />   {/* Login is now /login */}
-        <Route path="/dashboard" element={<Dashboard />} />
-
-        {/* THIS IS THE ROUTE FOR THE INVITE LINK */}
-        <Route path="/setup-password/:token" element={<SetupPassword />} />
-
-      </Routes>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <AppRoutes />
+      </Router>
+    </AuthProvider>
   );
 };
 

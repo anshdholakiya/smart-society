@@ -34,7 +34,6 @@ const ManageResidents = ({ currentUser }) => {
     } catch (_err) { alert("Failed to update role"); }
   };
 
-  // Filter Logic
   const filteredUsers = users.filter(u =>
     u.name.toLowerCase().includes(search.toLowerCase()) ||
     u.email.toLowerCase().includes(search.toLowerCase()) ||
@@ -75,7 +74,7 @@ const ManageResidents = ({ currentUser }) => {
             {filteredUsers.map(u => (
               <tr key={u.id} className="hover:bg-slate-50 transition duration-150">
 
-                {/* 1. RESIDENT INFO + JOIN DATE */}
+                {}
                 <td className="p-4">
                   <div className="flex items-center gap-3">
                     {u.profilePicture ? (
@@ -90,7 +89,7 @@ const ManageResidents = ({ currentUser }) => {
                       <p className="font-bold text-slate-800">{u.name}</p>
                       <p className="text-xs text-slate-400 font-medium">{u.email}</p>
 
-                      {/* NEW: Show when they joined */}
+                      {}
                       <div className="flex items-center gap-1 mt-1 text-[10px] text-slate-400">
                         <Calendar size={10} />
                         Joined: {new Date(u.createdAt).toLocaleDateString()}
@@ -99,7 +98,7 @@ const ManageResidents = ({ currentUser }) => {
                   </div>
                 </td>
 
-                {/* 2. ACCOUNT STATUS */}
+                {}
                 <td className="p-4">
                   {u.isSetup ? (
                     <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-700 border border-emerald-200">
@@ -115,7 +114,7 @@ const ManageResidents = ({ currentUser }) => {
                   )}
                 </td>
 
-                {/* 3. LOCATION */}
+                {}
                 <td className="p-4">
                   {u.wing && u.flatNumber ? (
                     <span className="flex items-center gap-1.5 text-sm font-bold text-slate-700 bg-slate-100 px-3 py-1.5 rounded-lg w-fit border border-slate-200">
@@ -126,7 +125,7 @@ const ManageResidents = ({ currentUser }) => {
                   )}
                 </td>
 
-                {/* 4. ROLE */}
+                {}
                 <td className="p-4">
                   <span className={`text-xs font-bold px-2 py-1 rounded border flex items-center gap-1 w-fit uppercase tracking-wider ${u.role === 'admin' ? 'bg-purple-50 text-purple-700 border-purple-200' : 'bg-slate-50 text-slate-600 border-slate-200'
                     }`}>
@@ -135,7 +134,7 @@ const ManageResidents = ({ currentUser }) => {
                   </span>
                 </td>
 
-                {/* 5. ACTIONS */}
+                {}
                 <td className="p-4 text-right">
                   {u.id !== currentUser.id && (
                     <div className="flex justify-end gap-2">

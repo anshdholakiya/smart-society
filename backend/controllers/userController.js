@@ -1,7 +1,7 @@
 const { User } = require('../models');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const crypto = require('crypto'); // Built-in Node module
+const crypto = require('crypto'); 
 const sendEmail = require('../utils/sendEmail');
 const { cloudinary } = require('../middleware/uploadMiddleware');
 
@@ -9,14 +9,11 @@ const generateToken = (id, name, role) => {
   return jwt.sign({ id, name, role }, process.env.JWT_SECRET, { expiresIn: '30d' });
 };
 
-// @desc    Login User
 exports.loginUser = async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ where: { email } });
 
   if (user && (await bcrypt.compare(password, user.password))) {
-    // Optional: Check if they have setup their account
-    // if (!user.isSetup) return res.status(403).json({ message: "Please use your invite link to set a password first." });
 
     res.json({
       token: generateToken(user.id, user.name, user.role),
@@ -27,7 +24,6 @@ exports.loginUser = async (req, res) => {
   }
 };
 
-// @desc    Register User (For initial setup only)
 exports.registerUser = async (req, res) => {
   const { name, email, password, role } = req.body;
   if (await User.findOne({ where: { email } })) {
@@ -36,13 +32,11 @@ exports.registerUser = async (req, res) => {
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(password, salt);
 
-  // Mark registered users as setup automatically
   const user = await User.create({ name, email, password: hashedPassword, role, isSetup: true });
 
   res.status(201).json({ token: generateToken(user.id, user.name, user.role) });
 };
 
-// @desc    Invite User (Generates Link)
 exports.inviteUser = async (req, res) => {
   try {
     const { name, email, role, wing, flatNumber } = req.body;
@@ -51,10 +45,8 @@ exports.inviteUser = async (req, res) => {
       return res.status(400).json({ message: 'User already exists' });
     }
 
-    // Generate secure random token
     const token = crypto.randomBytes(20).toString('hex');
 
-    // Create user with placeholder password
     const user = await User.create({
       name, email, role, wing, flatNumber,
       invitationToken: token,
@@ -87,7 +79,7 @@ exports.inviteUser = async (req, res) => {
       res.status(201).json({ message: 'Invitation link sent successfully to email.' });
     } catch (err) {
       console.log('❌ Failed to send email.', err);
-      // Reset the user tokens since we failed
+      
       user.invitationToken = undefined;
       await user.save({ validate: false });
 
@@ -99,7 +91,6 @@ exports.inviteUser = async (req, res) => {
   }
 };
 
-// @desc    Setup Password (Verifies Token)
 exports.setupPassword = async (req, res) => {
   try {
     const { token, password } = req.body;
@@ -115,7 +106,7 @@ exports.setupPassword = async (req, res) => {
 
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(password, salt);
-    user.invitationToken = null; // Clear token so it can't be used again
+    user.invitationToken = null; 
     user.isSetup = true;
     await user.save();
 
@@ -127,7 +118,6 @@ exports.setupPassword = async (req, res) => {
   }
 };
 
-// @desc    Get All Users
 exports.getAllUsers = async (req, res) => {
   try {
     const users = await User.findAll({ order: [['wing', 'ASC'], ['flatNumber', 'ASC']] });
@@ -137,7 +127,6 @@ exports.getAllUsers = async (req, res) => {
   }
 };
 
-// @desc    Delete User
 exports.deleteUser = async (req, res) => {
   try {
     await User.destroy({ where: { id: req.params.id } });
@@ -147,7 +136,6 @@ exports.deleteUser = async (req, res) => {
   }
 };
 
-// @desc    Get Current User Profile
 exports.getProfile = async (req, res) => {
   try {
     const user = await User.findByPk(req.user.id);
@@ -167,16 +155,14 @@ exports.getProfile = async (req, res) => {
   }
 };
 
-// @desc    Update User Profile (Self)
 exports.updateProfile = async (req, res) => {
   try {
     const user = await User.findByPk(req.user.id);
 
     if (!user) return res.status(404).json({ message: 'User not found' });
 
-    // Handle new profile picture upload
     if (req.file) {
-      // If a previous picture exists, delete it from Cloudinary
+      
       if (user.profilePictureId) {
         try {
           await cloudinary.uploader.destroy(user.profilePictureId);
@@ -184,12 +170,11 @@ exports.updateProfile = async (req, res) => {
           console.error("Failed to delete old profile picture:", err);
         }
       }
-      // Save new picture details
-      user.profilePicture = req.file.path; // Secure Cloudinary URL
-      user.profilePictureId = req.file.filename; // Cloudinary Public ID
+      
+      user.profilePicture = req.file.path; 
+      user.profilePictureId = req.file.filename; 
     }
 
-    // Allow updating these fields
     user.name = req.body.name || user.name;
     user.email = req.body.email || user.email;
     user.wing = req.body.wing || user.wing;
@@ -211,7 +196,6 @@ exports.updateProfile = async (req, res) => {
   }
 };
 
-// @desc    Update Role
 exports.updateUserRole = async (req, res) => {
   try {
     const user = await User.findByPk(req.params.id);

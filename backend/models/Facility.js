@@ -9,7 +9,7 @@ const Facility = sequelize.define('Facility', {
     },
     name: {
         type: DataTypes.STRING,
-        allowNull: false, // e.g., "Community Hall", "Tennis Court"
+        allowNull: false, 
     },
     description: {
         type: DataTypes.TEXT,

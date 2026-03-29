@@ -1,4 +1,4 @@
-// frontend/src/storage.js
+
 let memoryStorage = {};
 
 export const setAuthToken = (token) => {
