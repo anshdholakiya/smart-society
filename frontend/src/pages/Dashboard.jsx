@@ -328,12 +328,12 @@ const Dashboard = () => {
                 <div className="grid grid-cols-2 gap-4">
                   <div className="col-span-2">
                     <label className="block text-sm font-bold text-slate-700 mb-2">Resident Name</label>
-                    <input type="text" placeholder="e.g. Rahul Sharma" className="w-full p-3 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 transition" value={inviteData.name} onChange={(e) => setInviteData({ ...inviteData, name: e.target.value })} required />
+                    <input type="text" placeholder="Ansh DHolakiya" className="w-full p-3 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 transition" value={inviteData.name} onChange={(e) => setInviteData({ ...inviteData, name: e.target.value })} required />
                   </div>
 
                   <div className="col-span-2">
                     <label className="block text-sm font-bold text-slate-700 mb-2">Email Address</label>
-                    <input type="email" placeholder="e.g. rahul@example.com" className="w-full p-3 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 transition" value={inviteData.email} onChange={(e) => setInviteData({ ...inviteData, email: e.target.value })} required />
+                    <input type="email" placeholder="dholakiyaansh1707@gmail.com" className="w-full p-3 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 transition" value={inviteData.email} onChange={(e) => setInviteData({ ...inviteData, email: e.target.value })} required />
                   </div>
 
                   <div>
