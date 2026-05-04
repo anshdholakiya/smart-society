@@ -52,12 +52,12 @@ process.on('exit', (code) => {
 
 db.sequelize.sync({ alter: true })
   .then(() => {
-    console.log('✅ Database synced successfully.');
+    console.log(' Database synced successfully.');
     app.listen(PORT, () => {
-      console.log(`🚀 Server is flying on http://localhost:${PORT}`);
+      console.log(` Server is running on http://localhost:${PORT}`);
     });
   })
   .catch((err) => {
-    console.error('❌ Unable to connect/sync to the database:', err);
+    console.error(' Unable to connect/sync to the database:', err);
     process.exit(1);
   });
